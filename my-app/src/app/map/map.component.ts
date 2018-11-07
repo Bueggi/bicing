@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Station } from '../station';
+import { STATIONS } from '../mockdata';
 
 @Component({
   selector: 'app-map',
@@ -7,11 +9,20 @@ import { Component, OnInit } from '@angular/core';
   })
 export class MapComponent implements OnInit {
   title: string = 'My first BICING project';
+  // map initial properties: center & zoom
   lat: number = 41.382894;
   lng: number = 2.177432;
   zoom: number = 15;
 
+  stations: Station[];
+
   constructor () {}
 
-  ngOnInit () {}
+  ngOnInit () {
+    this.addStations();
+  }
+
+  addStations () {
+    this.stations = STATIONS;
+  }
 }
