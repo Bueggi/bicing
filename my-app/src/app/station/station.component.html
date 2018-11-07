@@ -1,8 +1,15 @@
 <div *ngIf="station">
   <mat-card>
-    <p>
-      station
-    </p>
-    {{station.bikes}} bikes
+    <div>
+      <div id="station-number">
+        Nº {{station.id}}
+      </div>
+      <div id="station-adress">
+        {{station.streetName}} {{station.streetNumber}}
+      </div>
+      <div id="station-slots">
+        {{station.slots}} free slots
+      </div>
+    </div>
   </mat-card>
 </div>

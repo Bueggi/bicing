@@ -8,7 +8,7 @@ import { ApiClientService } from '../api-client.service';
   styleUrls: ['./map.component.css']
   })
 export class MapComponent implements OnInit {
-  title: string = 'My first BICING project';
+  title: string = 'Select destiny station';
   // map initial properties: center & zoom
   lat: number = 41.382894;
   lng: number = 2.177432;
@@ -34,7 +34,14 @@ export class MapComponent implements OnInit {
   }
 
   clickedMarker ($event, station) {
-    console.log('station', station);
-    this.selectedStation = station;
+    // request information again to get real time data
+    this.apiClientService.getStations().subscribe(response => {
+      const requestedStation = response.stations.find(el => {
+        return el.id === station.id.toString();
+      });
+      requestedStation.latitude = parseFloat(station.latitude);
+      requestedStation.longitude = parseFloat(station.longitude);
+      this.selectedStation = requestedStation;
+    });
   }
 }
