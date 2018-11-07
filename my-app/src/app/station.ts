@@ -1,13 +1,13 @@
 export class Station {
-  id: number;
+  id: string;
   type: string;
   latitude: number;
   longitude: number;
   streetName: string;
-  streetNumber: number;
-  altitude: number;
-  slots: number;
-  bikes: number;
+  streetNumber: string;
+  altitude: string;
+  slots: string;
+  bikes: string;
   nearbyStations: string;
   status: string;
 }
