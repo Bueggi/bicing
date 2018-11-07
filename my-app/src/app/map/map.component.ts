@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Station } from '../station';
-import { STATIONS } from '../mockdata';
+import { ApiClientService } from '../api-client.service';
 
 @Component({
   selector: 'app-map',
@@ -16,13 +16,20 @@ export class MapComponent implements OnInit {
 
   stations: Station[];
 
-  constructor () {}
+  constructor (private apiClientService: ApiClientService) {}
 
   ngOnInit () {
     this.addStations();
   }
 
   addStations () {
-    this.stations = STATIONS;
+    // this.stations = STATIONS;
+    this.apiClientService.getStations().subscribe(response => {
+      this.stations = response.stations.map(station => ({
+        ...station,
+        latitude: parseFloat(station.latitude),
+        longitude: parseFloat(station.longitude)
+      }));
+    });
   }
 }
