@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
@@ -10,6 +11,7 @@ import { environment } from 'src/environments/environment';
   declarations: [AppComponent, MapComponent],
   imports: [
   BrowserModule,
+  HttpClientModule,
   AgmCoreModule.forRoot({
     apiKey: environment.GMAPS_API_KEY
     })
