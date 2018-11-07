@@ -1,5 +1,8 @@
-<mat-card>
-  <p>
-    station works!
-  </p>
-</mat-card>
+<div *ngIf="station">
+  <mat-card>
+    <p>
+      station
+    </p>
+    {{station.bikes}} bikes
+  </mat-card>
+</div>

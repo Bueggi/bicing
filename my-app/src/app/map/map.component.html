@@ -3,5 +3,10 @@
 <!-- this creates a google map on the page with the given lat/lng from -->
 <!-- the component as the initial center of the map: -->
 <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
-  <agm-marker *ngFor="let station of stations" [latitude]="station.latitude" [longitude]="station.longitude"></agm-marker>
+  <agm-marker *ngFor="let station of stations" [latitude]="station.latitude" [longitude]="station.longitude"
+    (markerClick)="clickedMarker($event, station)">
+  </agm-marker>
 </agm-map>
+<div *ngIf="selectedStation">
+  <app-station [station]="selectedStation"></app-station>
+</div>

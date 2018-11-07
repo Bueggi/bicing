@@ -15,6 +15,7 @@ export class MapComponent implements OnInit {
   zoom: number = 15;
 
   stations: Station[];
+  selectedStation: Station;
 
   constructor (private apiClientService: ApiClientService) {}
 
@@ -23,7 +24,6 @@ export class MapComponent implements OnInit {
   }
 
   addStations () {
-    // this.stations = STATIONS;
     this.apiClientService.getStations().subscribe(response => {
       this.stations = response.stations.map(station => ({
         ...station,
@@ -31,5 +31,10 @@ export class MapComponent implements OnInit {
         longitude: parseFloat(station.longitude)
       }));
     });
+  }
+
+  clickedMarker ($event, station) {
+    console.log('station', station);
+    this.selectedStation = station;
   }
 }
