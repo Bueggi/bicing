@@ -3,16 +3,18 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
+import { AgmCoreModule } from '@agm/core';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    MapComponent
-  ],
+  declarations: [AppComponent, MapComponent],
   imports: [
-    BrowserModule
+  BrowserModule,
+  AgmCoreModule.forRoot({
+    apiKey: environment.GMAPS_API_KEY
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
-})
-export class AppModule { }
+  })
+export class AppModule {}
