@@ -17,6 +17,7 @@ export class MapComponent implements OnInit {
   stations: Station[];
   selectedStation: Station;
   interval: any;
+  checkedStation = this.selectedStation;
 
   constructor (private apiClientService: ApiClientService) {}
 
@@ -36,34 +37,34 @@ export class MapComponent implements OnInit {
   }
 
   clickedMarker ($event, clickedStation) {
-    this.selectedStation = this.findStationById(clickedStation);
-    this.checkSlots(clickedStation);
+    this.findStationById(clickedStation, 'selectedStation');
+    this.checkSlots();
   }
 
-  checkSlots (clickedStation) {
+  checkSlots () {
     if (this.interval) {
       clearInterval(this.interval);
     }
-    this.interval = setInterval(clickedStation => {
+    this.interval = setInterval(() => {
       console.log('checking');
-      // not working
-      const checkedStation = this.findStationById(clickedStation);
-      if (checkedStation.slots !== this.selectedStation.slots) {
-        this.selectedStation = checkedStation;
+      this.findStationById(this.selectedStation, 'checkedStation');
+      if (
+        this.checkedStation &&
+        this.checkedStation.slots !== this.selectedStation.slots
+      ) {
+        this.selectedStation = this.checkedStation;
       }
-    }, 5000);
+    }, 10000);
   }
 
-  findStationById (clickedStation) {
+  findStationById (clickedStation, assignTo) {
     // request information again to get real time data
     this.apiClientService.getStations().subscribe(response => {
-      let requestedStation = response.stations.find(
+      const requestedStation = response.stations.find(
         el => el.id === clickedStation.id.toString()
       );
-      clickedStation = this.sanitizeStation(requestedStation, 'bikes', 'slots');
-      console.log('findById', clickedStation);
+      this[assignTo] = this.sanitizeStation(requestedStation, 'bikes', 'slots');
     });
-    return clickedStation;
   }
 
   sanitizeStation (requestedStation, ...keys) {
