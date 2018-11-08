@@ -16,6 +16,7 @@ export class MapComponent implements OnInit {
 
   stations: Station[];
   selectedStation: Station;
+  interval: any;
 
   constructor (private apiClientService: ApiClientService) {}
 
@@ -23,6 +24,7 @@ export class MapComponent implements OnInit {
     this.addStations();
   }
 
+  // on init get all station from Bicing api via my koa server
   addStations () {
     this.apiClientService.getStations().subscribe(response => {
       this.stations = response.stations.map(station => ({
@@ -33,15 +35,42 @@ export class MapComponent implements OnInit {
     });
   }
 
-  clickedMarker ($event, station) {
+  clickedMarker ($event, clickedStation) {
+    this.selectedStation = this.findStationById(clickedStation);
+    this.checkSlots(clickedStation);
+  }
+
+  checkSlots (clickedStation) {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
+    this.interval = setInterval(clickedStation => {
+      console.log('checking');
+      // not working
+      const checkedStation = this.findStationById(clickedStation);
+      if (checkedStation.slots !== this.selectedStation.slots) {
+        this.selectedStation = checkedStation;
+      }
+    }, 5000);
+  }
+
+  findStationById (clickedStation) {
     // request information again to get real time data
     this.apiClientService.getStations().subscribe(response => {
-      const requestedStation = response.stations.find(el => {
-        return el.id === station.id.toString();
-      });
-      requestedStation.latitude = parseFloat(station.latitude);
-      requestedStation.longitude = parseFloat(station.longitude);
-      this.selectedStation = requestedStation;
+      let requestedStation = response.stations.find(
+        el => el.id === clickedStation.id.toString()
+      );
+      clickedStation = this.sanitizeStation(requestedStation, 'bikes', 'slots');
+      console.log('findById', clickedStation);
     });
+    return clickedStation;
+  }
+
+  sanitizeStation (requestedStation, ...keys) {
+    // conververts string to number values (of desired keys)
+    keys.forEach(key => {
+      requestedStation[key] = parseFloat(requestedStation[key]);
+    });
+    return requestedStation;
   }
 }
