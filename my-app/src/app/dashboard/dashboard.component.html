@@ -1,13 +1,16 @@
 <div class="example-button-row">
-  <button mat-button>Basic</button>
-  <button (click)="display()" mat-button color="primary">Primary</button>
-  <button mat-button color="accent">Accent</button>
+  <button (click)="selectBikes()" mat-button>Bikes</button>
+  <button (click)="selectSlots()" mat-button color="primary">Parking</button>
   <button mat-button color="warn">Warn</button>
   <a mat-button routerLink=".">Link</a>
 </div>
 
 <app-map [stations]="stations" (clickedStation)="clickedMarker($event)"></app-map>
 
-<div *ngIf="selectedStation">
-  <app-station [station]="selectedStation"></app-station>
-</div>
+
+<app-station *ngIf="selectedStation" [station]="selectedStation"></app-station>
+<mat-card *ngIf="noSlots">
+  <div>
+    No stations go to {{ nearStations }}
+  </div>
+</mat-card>

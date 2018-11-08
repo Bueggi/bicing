@@ -12,6 +12,10 @@ export class DashboardComponent implements OnInit {
   interval: any;
   selectedStation: Station;
   checkedStation = this.selectedStation;
+  noSlots: boolean = false;
+  nearStations: number[];
+  // element = 'bikes' or 'slots'
+  element: string;
 
   constructor (private apiClientService: ApiClientService) {}
 
@@ -32,7 +36,16 @@ export class DashboardComponent implements OnInit {
 
   clickedMarker (clickedStation) {
     this.findStationById(clickedStation, 'selectedStation');
-    this.checkSlots();
+
+    this.nearStations = clickedStation.nearbyStations
+      .split(', ')
+      .map(el => parseInt(el));
+
+    console.log(this.nearStations);
+
+    this.checkNoSlots(clickedStation);
+
+    if (this.noSlots === false) this.checkSlots();
   }
 
   checkSlots () {
@@ -67,5 +80,24 @@ export class DashboardComponent implements OnInit {
       requestedStation[key] = parseFloat(requestedStation[key]);
     });
     return requestedStation;
+  }
+
+  checkNoSlots (station) {
+    console.log(station);
+
+    console.log(station.slots);
+    // == because in station the slots are strings, should sanitize all
+    // missing checkNoSlots inside checkSlots()
+    this.noSlots = station.slots == 0 ? true : false;
+    console.log(station.slots == 0);
+
+    console.log('checkNoSlots', this.noSlots);
+  }
+
+  selectBikes () {
+    this.element = 'bikes';
+  }
+  selectSlots () {
+    this.element = 'slots';
   }
 }
