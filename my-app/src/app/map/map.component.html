@@ -1,23 +1,10 @@
-<div class="example-button-row">
-  <button mat-button>Basic</button>
-  <button (click)="display()" mat-button color="primary">Primary</button>
-  <button mat-button color="accent">Accent</button>
-  <button mat-button color="warn">Warn</button>
-  <button mat-button disabled>Disabled</button>
-  <a mat-button routerLink=".">Link</a>
-</div>
 <h3>{{ title }}</h3>
-
 <!-- this creates a google map on the page with the given lat/lng from -->
 <!-- the component as the initial center of the map: -->
 <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
   <div *ngIf="stations">
     <agm-marker *ngFor="let station of stations" [iconUrl]="image" [latitude]="station.latitude" [longitude]="station.longitude"
-      (markerClick)="clickedMarker($event, station)">
+      (markerClick)="clickedMarker(station)">
     </agm-marker>
   </div>
 </agm-map>
-
-<div *ngIf="selectedStation">
-  <app-station [station]="selectedStation"></app-station>
-</div>

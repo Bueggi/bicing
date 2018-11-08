@@ -1,0 +1,13 @@
+<div class="example-button-row">
+  <button mat-button>Basic</button>
+  <button (click)="display()" mat-button color="primary">Primary</button>
+  <button mat-button color="accent">Accent</button>
+  <button mat-button color="warn">Warn</button>
+  <a mat-button routerLink=".">Link</a>
+</div>
+
+<app-map [stations]="stations" (clickedStation)="clickedMarker($event)"></app-map>
+
+<div *ngIf="selectedStation">
+  <app-station [station]="selectedStation"></app-station>
+</div>
