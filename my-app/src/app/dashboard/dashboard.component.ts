@@ -8,13 +8,23 @@ import { Station } from '../station';
   styleUrls: ['./dashboard.component.css']
   })
 export class DashboardComponent implements OnInit {
+  // stations -> binded to map component
   stations: Station[];
+
+  // variable to save intervalId and be able to clearInterval
   interval: any;
+
+  // selectedStation -> binded to the station component
   selectedStation: Station;
+
+  // variable to save latest data of selected station (initialized with selectedStation)
   checkedStation = this.selectedStation;
+
+  // if noSlots is true -> render Go to near station
   noSlots: boolean = false;
   nearStations: number[];
-  // element = 'bikes' or 'slots'
+
+  // element: either 'bikes' or 'slots'
   element: string;
 
   constructor (private apiClientService: ApiClientService) {}
@@ -26,11 +36,15 @@ export class DashboardComponent implements OnInit {
   // on init get all station from Bicing api via my koa server
   addStations () {
     this.apiClientService.getStations().subscribe(response => {
-      this.stations = response.stations.map(station => ({
-        ...station,
-        latitude: parseFloat(station.latitude),
-        longitude: parseFloat(station.longitude)
-      }));
+      this.stations = response.stations.map(station => {
+        return this.sanitizeStation(
+          station,
+          'latitude',
+          'longitude',
+          'bikes',
+          'slots'
+        );
+      });
     });
   }
 
@@ -41,17 +55,22 @@ export class DashboardComponent implements OnInit {
       .split(', ')
       .map(el => parseInt(el));
 
-    console.log(this.nearStations);
-
     this.checkNoSlots(clickedStation);
 
-    if (this.noSlots === false) this.checkSlots();
+    if (this.noSlots) {
+      if (this.interval) clearInterval(this.interval);
+    } else {
+      this.checkedStation = clickedStation;
+      this.checkSlots();
+    }
   }
 
+  //checkSlots creates an interval to check real time changes in slots
   checkSlots () {
     if (this.interval) {
       clearInterval(this.interval);
     }
+
     this.interval = setInterval(() => {
       console.log('checking');
       this.findStationById(this.selectedStation, 'checkedStation');
@@ -60,6 +79,7 @@ export class DashboardComponent implements OnInit {
         this.checkedStation.slots !== this.selectedStation.slots
       ) {
         this.selectedStation = this.checkedStation;
+        this.checkNoSlots(this.selectedStation);
       }
     }, 10000);
   }
@@ -74,8 +94,8 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  // conververt string to number values of desired input station's keys
   sanitizeStation (requestedStation, ...keys) {
-    // conververts string to number values (of desired keys)
     keys.forEach(key => {
       requestedStation[key] = parseFloat(requestedStation[key]);
     });
@@ -83,15 +103,7 @@ export class DashboardComponent implements OnInit {
   }
 
   checkNoSlots (station) {
-    console.log(station);
-
-    console.log(station.slots);
-    // == because in station the slots are strings, should sanitize all
-    // missing checkNoSlots inside checkSlots()
-    this.noSlots = station.slots == 0 ? true : false;
-    console.log(station.slots == 0);
-
-    console.log('checkNoSlots', this.noSlots);
+    this.noSlots = station.slots === 0 ? true : false;
   }
 
   selectBikes () {

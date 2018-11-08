@@ -4,7 +4,7 @@
 <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
   <div *ngIf="stations">
     <agm-marker *ngFor="let station of stations" [latitude]="station.latitude" [longitude]="station.longitude"
-      (markerClick)="clickedMarker(station)" [label]="station.bikes">
+      (markerClick)="clickedMarker(station)" [label]="station.id.toString()">
     </agm-marker>
   </div>
 </agm-map>
