@@ -13,6 +13,15 @@ export class MapComponent implements OnInit {
   lat: number = 41.382894;
   lng: number = 2.177432;
   zoom: number = 15;
+  image: object = {
+    url: '../../assets/2019_TImberjack_NX_Eagle_27.5_Org-uc-1_.jpg',
+    scaledSize: {
+      width: 20,
+      height: 20
+    }
+  };
+
+  // '../../assets/2019_TImberjack_NX_Eagle_27.5_Org-uc-1_.jpg';
 
   stations: Station[];
   selectedStation: Station;
@@ -47,13 +56,13 @@ export class MapComponent implements OnInit {
     }
     this.interval = setInterval(() => {
       console.log('checking');
-      this.findStationById(this.selectedStation, 'checkedStation');
-      if (
-        this.checkedStation &&
-        this.checkedStation.slots !== this.selectedStation.slots
-      ) {
-        this.selectedStation = this.checkedStation;
-      }
+      // this.findStationById(this.selectedStation, 'checkedStation');
+      // if (
+      //   this.checkedStation &&
+      //   this.checkedStation.slots !== this.selectedStation.slots
+      // ) {
+      //   this.selectedStation = this.checkedStation;
+      // }
     }, 10000);
   }
 
@@ -73,5 +82,9 @@ export class MapComponent implements OnInit {
       requestedStation[key] = parseFloat(requestedStation[key]);
     });
     return requestedStation;
+  }
+
+  display () {
+    console.log('hello');
   }
 }
