@@ -1,0 +1,10 @@
+#station-no-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#no-slots-status-icon {
+  margin-right: 0.5em;
+  color: #d32f2f;
+}

@@ -19,8 +19,10 @@
   [station]="selectedStation"
 ></app-station>
 
-<mat-card *ngIf="noSlots">
-  <div>No Slots go to stations {{ nearStationsId }}</div>
-</mat-card>
+<app-no-slots
+  *ngIf="noSlots"
+  [station]="selectedStation"
+  [nearbyStations]="nearbyStations"
+></app-no-slots>
 
 <!-- <app-station [station]="mock"></app-station> -->

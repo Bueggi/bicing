@@ -1,0 +1,17 @@
+<mat-card id="no-slots-card">
+  <mat-card-header>
+    <div mat-card-avatar><mat-icon>directions_bike</mat-icon></div>
+    <mat-card-title
+      >{{ station.streetName }} {{ station.streetNumber }}</mat-card-title
+    >
+    <mat-card-subtitle>Station Nº {{ station.id }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content id="station-no-content">
+    <mat-icon id="no-slots-status-icon">cancel</mat-icon>
+    <mat-chip-list id="content-list-of-chips">
+      <mat-chip> NO SLOTS AVAILABLE </mat-chip>
+    </mat-chip-list>
+  </mat-card-content>
+</mat-card>
+
+<!-- <div>No Slots go to stations {{ nearbyStations[0].id }}</div> -->
