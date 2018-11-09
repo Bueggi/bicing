@@ -155,10 +155,17 @@ export class DashboardComponent implements OnInit {
     this.dialog
       .open(NoSlotsDialogComponent, {
         data: {
-          stationData: this.selectedStation
+          stationData: this.selectedStation,
+          nearbyStations: this.nearStations
         }
       })
       .afterClosed()
-      .subscribe(result => console.log(result));
+      .subscribe(result => {
+        console.log(result);
+        const newSelectedStation = this.stations.find(
+          el => el['id'] === result.toString()
+        );
+        this.clickedMarker(newSelectedStation);
+      });
   }
 }
