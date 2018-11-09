@@ -93,7 +93,7 @@ export class DashboardComponent implements OnInit {
 
       this.checkNoSlots(this.selectedStation);
       if (this.noSlots) {
-        if (this.interval) clearInterval(this.interval);
+        this.clearCheckInterval();
       } else {
         this.checkSlots();
       }
@@ -102,9 +102,7 @@ export class DashboardComponent implements OnInit {
 
   //checkSlots creates an interval to check real time changes in slots
   checkSlots () {
-    if (this.interval) {
-      clearInterval(this.interval);
-    }
+    this.clearCheckInterval();
 
     this.interval = setInterval(() => {
       console.log('checking');
@@ -143,7 +141,11 @@ export class DashboardComponent implements OnInit {
           if (this.noSlots) this.openDialog();
         }
       });
-    }, 4000);
+    }, 10000);
+  }
+
+  clearCheckInterval () {
+    if (this.interval) clearInterval(this.interval);
   }
 
   // conververt string to number values of desired input station's keys
@@ -159,7 +161,7 @@ export class DashboardComponent implements OnInit {
   }
 
   openDialog () {
-    if (this.interval) clearInterval(this.interval);
+    this.clearCheckInterval();
     const nearbyStationsWithSlots = this.nearbyStations.filter(
       el => el.slots > 0
     );
