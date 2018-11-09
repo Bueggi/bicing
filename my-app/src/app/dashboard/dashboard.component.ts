@@ -116,6 +116,7 @@ export class DashboardComponent implements OnInit {
         ) {
           this.selectedStation = this.checkedStation;
           this.checkNoSlots(this.selectedStation);
+          if (this.noSlots) this.openDialog();
         }
       });
     }, 10000);
