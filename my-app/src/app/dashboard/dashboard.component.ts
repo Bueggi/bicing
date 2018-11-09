@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiClientService } from '../api-client.service';
 import { Station } from '../station';
+import { MatDialog } from '@angular/material/dialog';
+import { NoSlotsDialogComponent } from '../no-slots-dialog/no-slots-dialog.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,7 +29,10 @@ export class DashboardComponent implements OnInit {
   // element: either 'bikes' or 'slots'
   element: string;
 
-  constructor (private apiClientService: ApiClientService) {}
+  constructor (
+    private apiClientService: ApiClientService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit () {
     this.addStations();
@@ -111,5 +116,16 @@ export class DashboardComponent implements OnInit {
   }
   selectSlots () {
     this.element = 'slots';
+  }
+
+  openDialog () {
+    this.dialog
+      .open(NoSlotsDialogComponent, {
+        data: {
+          stationData: this.selectedStation
+        }
+      })
+      .afterClosed()
+      .subscribe(result => console.log(result));
   }
 }

@@ -1,7 +1,7 @@
 <div class="example-button-row">
   <button (click)="selectBikes()" mat-button matTooltip="Info about the action">Bikes</button>
   <button (click)="selectSlots()" mat-button color="primary">Parking</button>
-  <button mat-button color="warn">Warn</button>
+  <button mat-button color="warn" (click)="openDialog()">Warn</button>
   <a mat-button routerLink=".">Link</a>
 </div>
 
