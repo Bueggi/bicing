@@ -1,3 +1,36 @@
-#station-content {
+#station {
+  height: 25vh;
+}
+
+#station-content-opn {
   display: flex;
+}
+
+#station-content-cls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#content-list-of-chips {
+  display: flex;
+  justify-content: space-around;
+}
+
+#parking-chip {
+  color: white;
+  font-size: 1.2em;
+}
+
+#open-status-icon {
+  color: #00b248;
+}
+
+#bike-number-icon {
+  margin-left: 0.3em;
+}
+
+#closed-status-icon {
+  margin-right: 0.5em;
+  color: #d32f2f;
 }
