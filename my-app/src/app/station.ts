@@ -1,5 +1,5 @@
 export class Station {
-  id: string;
+  id: number;
   type: string;
   latitude: number;
   longitude: number;

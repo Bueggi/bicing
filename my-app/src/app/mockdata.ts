@@ -2,7 +2,7 @@ import { Station } from './station';
 
 export const STATIONS: Station[] = [
   {
-    id: '1',
+    id: 1,
     type: 'BIKE',
     latitude: 41.397952,
     longitude: 2.180042,
@@ -15,7 +15,7 @@ export const STATIONS: Station[] = [
     status: 'OPN'
   },
   {
-    id: '2',
+    id: 2,
     type: 'BIKE',
     latitude: 41.39553,
     longitude: 2.17706,
@@ -28,7 +28,7 @@ export const STATIONS: Station[] = [
     status: 'OPN'
   },
   {
-    id: '3',
+    id: 3,
     type: 'BIKE',
     latitude: 41.394055,
     longitude: 2.181299,
