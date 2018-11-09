@@ -29,6 +29,20 @@ export class DashboardComponent implements OnInit {
   // element: either 'bikes' or 'slots'
   element: string;
 
+  mock: Station = {
+    id: '1',
+    type: 'BIKE',
+    latitude: 41.397952,
+    longitude: 2.180042,
+    streetName: 'Gran Via Corts Catalanes',
+    streetNumber: '760',
+    altitude: '21',
+    slots: '6',
+    bikes: '23',
+    nearbyStations: '24, 369, 387, 426',
+    status: 'OPN'
+  };
+
   constructor (
     private apiClientService: ApiClientService,
     private dialog: MatDialog
@@ -54,20 +68,27 @@ export class DashboardComponent implements OnInit {
   }
 
   clickedMarker (clickedStation) {
-    this.findStationById(clickedStation, 'selectedStation');
+    this.apiClientService.getStations().subscribe(response => {
+      const requestedStation = response.stations.find(
+        el => el.id === clickedStation.id.toString()
+      );
+      this.selectedStation = this.sanitizeStation(
+        requestedStation,
+        'bikes',
+        'slots'
+      );
 
-    this.nearStations = clickedStation.nearbyStations
-      .split(', ')
-      .map(el => parseInt(el));
+      this.nearStations = clickedStation.nearbyStations
+        .split(', ')
+        .map(el => parseInt(el));
 
-    this.checkNoSlots(clickedStation);
-
-    if (this.noSlots) {
-      if (this.interval) clearInterval(this.interval);
-    } else {
-      this.checkedStation = clickedStation;
-      this.checkSlots();
-    }
+      this.checkNoSlots(this.selectedStation);
+      if (this.noSlots) {
+        if (this.interval) clearInterval(this.interval);
+      } else {
+        this.checkSlots();
+      }
+    });
   }
 
   //checkSlots creates an interval to check real time changes in slots
@@ -78,26 +99,37 @@ export class DashboardComponent implements OnInit {
 
     this.interval = setInterval(() => {
       console.log('checking');
-      this.findStationById(this.selectedStation, 'checkedStation');
-      if (
-        this.checkedStation &&
-        this.checkedStation.slots !== this.selectedStation.slots
-      ) {
-        this.selectedStation = this.checkedStation;
-        this.checkNoSlots(this.selectedStation);
-      }
+
+      this.apiClientService.getStations().subscribe(response => {
+        const requestedStation = response.stations.find(
+          el => el.id === this.selectedStation.id.toString()
+        );
+        this.checkedStation = this.sanitizeStation(
+          requestedStation,
+          'bikes',
+          'slots'
+        );
+
+        if (
+          this.checkedStation &&
+          this.checkedStation.slots !== this.selectedStation.slots
+        ) {
+          this.selectedStation = this.checkedStation;
+          this.checkNoSlots(this.selectedStation);
+        }
+      });
     }, 10000);
   }
 
-  findStationById (clickedStation, assignTo) {
-    // request information again to get real time data
-    this.apiClientService.getStations().subscribe(response => {
-      const requestedStation = response.stations.find(
-        el => el.id === clickedStation.id.toString()
-      );
-      this[assignTo] = this.sanitizeStation(requestedStation, 'bikes', 'slots');
-    });
-  }
+  // findStationById (clickedStation, assignTo) {
+  //   // request information again to get real time data
+  //   this.apiClientService.getStations().subscribe(response => {
+  //     const requestedStation = response.stations.find(
+  //       el => el.id === clickedStation.id.toString()
+  //     );
+  //     this[assignTo] = this.sanitizeStation(requestedStation, 'bikes', 'slots');
+  //   });
+  // }
 
   // conververt string to number values of desired input station's keys
   sanitizeStation (requestedStation, ...keys) {
