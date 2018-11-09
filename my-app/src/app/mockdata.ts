@@ -9,8 +9,8 @@ export const STATIONS: Station[] = [
     streetName: 'Gran Via Corts Catalanes',
     streetNumber: '760',
     altitude: '21',
-    slots: '6',
-    bikes: '23',
+    slots: 6,
+    bikes: 23,
     nearbyStations: '24, 369, 387, 426',
     status: 'OPN'
   },
@@ -22,8 +22,8 @@ export const STATIONS: Station[] = [
     streetName: 'Roger de Flor/ Gran Vía',
     streetNumber: '126',
     altitude: '21',
-    slots: '12',
-    bikes: '14',
+    slots: 12,
+    bikes: 14,
     nearbyStations: '360, 368, 387, 414',
     status: 'OPN'
   },
@@ -35,8 +35,8 @@ export const STATIONS: Station[] = [
     streetName: 'Nàpols',
     streetNumber: '82',
     altitude: '22',
-    slots: '18',
-    bikes: '9',
+    slots: 18,
+    bikes: 9,
     nearbyStations: '4, 6, 119, 419',
     status: 'OPN'
   }

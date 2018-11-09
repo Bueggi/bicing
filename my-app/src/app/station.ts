@@ -6,8 +6,8 @@ export class Station {
   streetName: string;
   streetNumber: string;
   altitude: string;
-  slots: string;
-  bikes: string;
+  slots: number;
+  bikes: number;
   nearbyStations: string;
   status: string;
 }

@@ -42,8 +42,8 @@ export class DashboardComponent implements OnInit {
     streetName: 'Gran Via Corts Catalanes',
     streetNumber: '760',
     altitude: '21',
-    slots: '6',
-    bikes: '23',
+    slots: 6,
+    bikes: 23,
     nearbyStations: '24, 369, 387, 426',
     status: 'OPN'
   };
@@ -143,7 +143,7 @@ export class DashboardComponent implements OnInit {
           if (this.noSlots) this.openDialog();
         }
       });
-    }, 10000);
+    }, 4000);
   }
 
   // conververt string to number values of desired input station's keys
@@ -159,11 +159,15 @@ export class DashboardComponent implements OnInit {
   }
 
   openDialog () {
+    if (this.interval) clearInterval(this.interval);
+    const nearbyStationsWithSlots = this.nearbyStations.filter(
+      el => el.slots > 0
+    );
     this.dialog
       .open(NoSlotsDialogComponent, {
         data: {
           stationData: this.selectedStation,
-          nearbyStations: this.nearStationsId
+          nearbyStations: nearbyStationsWithSlots
         }
       })
       .afterClosed()

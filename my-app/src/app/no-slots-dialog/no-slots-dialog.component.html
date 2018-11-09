@@ -1,20 +1,9 @@
-<h2 mat-dialog-title>Hi No more slots in station {{ data.stationData.id }}</h2>
-<p>Go to stations: {{ data.stationData.nearbyStations }}</p>
-
-<!--
-  <button
-    mat-raised-button
-    [mat-dialog-close]="data.stationData.nearbyStations[0]"
-  >
-    Yes
-  </button>
--->
-<div>{{ data.nearbyStations }}</div>
-
+<h2 mat-dialog-title>No more slots in destiny station</h2>
+<h3>Go to:</h3>
 <button
-  *ngFor="let i of data.nearbyStations"
+  *ngFor="let station of data.nearbyStations"
   mat-raised-button
-  [mat-dialog-close]="i"
+  [mat-dialog-close]="station.id"
 >
-  {{ i }}
+  {{ station.streetName }} {{ station.streetNumber }}
 </button>

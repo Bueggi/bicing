@@ -4,6 +4,7 @@
 
 #station-content-opn {
   display: flex;
+  justify-content: center;
 }
 
 #station-content-cls {
