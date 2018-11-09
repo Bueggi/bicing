@@ -13,6 +13,10 @@ export class DashboardComponent implements OnInit {
   // stations -> binded to map component
   stations: Station[];
 
+  // realtime stations status:
+  updatedStations: Station[];
+  nearbyStations: Station[];
+
   // variable to save intervalId and be able to clearInterval
   interval: any;
 
@@ -24,13 +28,14 @@ export class DashboardComponent implements OnInit {
 
   // if noSlots is true -> render Go to near station
   noSlots: boolean = false;
-  nearStations: number[];
+
+  nearStationsId: number[];
 
   // element: either 'bikes' or 'slots'
   element: string;
 
   mock: Station = {
-    id: '1',
+    id: 1,
     type: 'BIKE',
     latitude: 41.397952,
     longitude: 2.180042,
@@ -58,6 +63,7 @@ export class DashboardComponent implements OnInit {
       this.stations = response.stations.map(station => {
         return this.sanitizeStation(
           station,
+          'id',
           'latitude',
           'longitude',
           'bikes',
@@ -74,11 +80,14 @@ export class DashboardComponent implements OnInit {
       );
       this.selectedStation = this.sanitizeStation(
         requestedStation,
+        'id',
+        'latitude',
+        'longitude',
         'bikes',
         'slots'
       );
 
-      this.nearStations = clickedStation.nearbyStations
+      this.nearStationsId = this.selectedStation.nearbyStations
         .split(', ')
         .map(el => parseInt(el));
 
@@ -101,15 +110,30 @@ export class DashboardComponent implements OnInit {
       console.log('checking');
 
       this.apiClientService.getStations().subscribe(response => {
-        const requestedStation = response.stations.find(
-          el => el.id === this.selectedStation.id.toString()
-        );
-        this.checkedStation = this.sanitizeStation(
-          requestedStation,
-          'bikes',
-          'slots'
+        // to keep track of the latest information about stations
+        this.updatedStations = response.stations.map(station => {
+          return this.sanitizeStation(
+            station,
+            'id',
+            'latitude',
+            'longitude',
+            'bikes',
+            'slots'
+          );
+        });
+
+        this.nearbyStations = this.updatedStations.filter(el =>
+          this.nearStationsId.includes(el.id)
         );
 
+        // search for requested station
+        const requestedStation = this.updatedStations.find(
+          el => el.id === this.selectedStation.id
+        );
+
+        this.checkedStation = requestedStation;
+
+        // if station slots number changes, reasing selected station to re-render
         if (
           this.checkedStation &&
           this.checkedStation.slots !== this.selectedStation.slots
@@ -121,16 +145,6 @@ export class DashboardComponent implements OnInit {
       });
     }, 10000);
   }
-
-  // findStationById (clickedStation, assignTo) {
-  //   // request information again to get real time data
-  //   this.apiClientService.getStations().subscribe(response => {
-  //     const requestedStation = response.stations.find(
-  //       el => el.id === clickedStation.id.toString()
-  //     );
-  //     this[assignTo] = this.sanitizeStation(requestedStation, 'bikes', 'slots');
-  //   });
-  // }
 
   // conververt string to number values of desired input station's keys
   sanitizeStation (requestedStation, ...keys) {
@@ -144,28 +158,26 @@ export class DashboardComponent implements OnInit {
     this.noSlots = station.slots === 0 ? true : false;
   }
 
-  selectBikes () {
-    this.element = 'bikes';
-  }
-  selectSlots () {
-    this.element = 'slots';
-  }
-
   openDialog () {
     this.dialog
       .open(NoSlotsDialogComponent, {
         data: {
           stationData: this.selectedStation,
-          nearbyStations: this.nearStations
+          nearbyStations: this.nearStationsId
         }
       })
       .afterClosed()
       .subscribe(result => {
         console.log(result);
-        const newSelectedStation = this.stations.find(
-          el => el['id'] === result.toString()
-        );
+        const newSelectedStation = this.stations.find(el => el.id === result);
         this.clickedMarker(newSelectedStation);
       });
   }
 }
+
+// selectBikes () {
+//   this.element = 'bikes';
+// }
+// selectSlots () {
+//   this.element = 'slots';
+// }
