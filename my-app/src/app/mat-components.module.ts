@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   exports: [
@@ -13,7 +14,8 @@ import { MatDialogModule } from '@angular/material/dialog';
   MatIconModule,
   MatButtonModule,
   MatTooltipModule,
-  MatDialogModule
+  MatDialogModule,
+  MatChipsModule
   ]
   })
 export class MatComponentsModule {}

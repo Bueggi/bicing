@@ -1,5 +1,25 @@
 <div *ngIf="station">
   <mat-card>
+    <mat-card-header>
+      <div mat-card-avatar>
+        <mat-icon>directions_bike</mat-icon>
+      </div>
+      <mat-card-title>{{station.streetName}} {{station.streetNumber}}</mat-card-title>
+      <mat-card-subtitle>Station Nº {{station.id}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content id="station-content">
+      <mat-chip-list>
+        <mat-chip>
+          {{station.slots}} <mat-icon>local_parking</mat-icon> slots
+        </mat-chip>
+        <mat-chip>{{station.bikes}} bikes</mat-chip>
+      </mat-chip-list>
+    </mat-card-content>
+    <mat-card-footer>
+      Status {{station.status}}
+    </mat-card-footer>
+  </mat-card>
+  <!-- <mat-card>
     <div>
       <div id="station-number">
         Nº {{station.id}}
@@ -14,5 +34,5 @@
         {{station.bikes}} bikes
       </div>
     </div>
-  </mat-card>
+  </mat-card> -->
 </div>
