@@ -12,6 +12,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MatComponentsModule } from './mat-components.module';
 import { NoSlotsDialogComponent } from './no-slots-dialog/no-slots-dialog.component';
 import { NoSlotsComponent } from './no-slots/no-slots.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { NoSlotsComponent } from './no-slots/no-slots.component';
   StationComponent,
   DashboardComponent,
   NoSlotsDialogComponent,
-  NoSlotsComponent
+  NoSlotsComponent,
+  HeaderComponent
   ],
   imports: [
   BrowserModule,

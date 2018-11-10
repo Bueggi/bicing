@@ -8,7 +8,6 @@ import { GoogleMapsAPIWrapper } from '@agm/core';
   styleUrls: ['./map.component.css']
   })
 export class MapComponent implements OnInit {
-  title: string = 'Select destiny station';
   // map initial properties: center & zoom
   currentLat: number = 41.3851;
   currentLong: number = 2.1734;

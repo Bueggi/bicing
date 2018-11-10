@@ -13,12 +13,6 @@ export class DashboardComponent implements OnInit {
   // stations -> binded to map component
   stations: Station[];
   loadingStations: boolean = false;
-  progressSpinner: object = {
-    mode: 'indeterminate',
-    color: 'warn',
-    diameter: 35,
-    strokeWidth: 5
-  };
 
   // realtime stations status:
   updatedStations: Station[];

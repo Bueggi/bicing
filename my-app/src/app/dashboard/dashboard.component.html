@@ -7,17 +7,8 @@
   <a mat-button routerLink=".">Link</a>
 </div>
 
-<mat-icon>directions_bike</mat-icon>
-<mat-progress-spinner
-  *ngIf="loadingStations"
-  [color]="progressSpinner.color"
-  [mode]="progressSpinner.mode"
-  [diameter]="progressSpinner.diameter"
-  [strokeWidth]="progressSpinner.strokeWidth"
->
-</mat-progress-spinner>
+<app-header [loadingStations]="loadingStations"></app-header>
 
-<div *ngIf="loadingStations">LOADING</div>
 <app-map
   [stations]="stations"
   (clickedStation)="clickedMarker($event)"
