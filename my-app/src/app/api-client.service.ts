@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
   })
 export class ApiClientService {
-  baseUrl: string = 'http://localhost:3000/stations';
+  baseUrl: string = 'http://localhost:3000';
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -17,6 +17,6 @@ export class ApiClientService {
   constructor (private http: HttpClient) {}
 
   getStations (): Observable<any> {
-    return this.http.get<any>(this.baseUrl);
+    return this.http.get<any>(`${this.baseUrl}/stations`);
   }
 }
