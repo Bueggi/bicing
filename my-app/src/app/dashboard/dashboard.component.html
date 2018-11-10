@@ -8,14 +8,23 @@
 </div>
 
 <mat-icon>directions_bike</mat-icon>
+<mat-progress-spinner
+  *ngIf="loadingStations"
+  [color]="progressSpinner.color"
+  [mode]="progressSpinner.mode"
+  [diameter]="progressSpinner.diameter"
+  [strokeWidth]="progressSpinner.strokeWidth"
+>
+</mat-progress-spinner>
 
+<div *ngIf="loadingStations">LOADING</div>
 <app-map
   [stations]="stations"
   (clickedStation)="clickedMarker($event)"
 ></app-map>
 
 <app-station
-  *ngIf="selectedStation && !noSlots"
+  *ngIf="!loadingSelectedStation && selectedStation && !noSlots"
   [station]="selectedStation"
 ></app-station>
 

@@ -12,6 +12,13 @@ import { NoSlotsDialogComponent } from '../no-slots-dialog/no-slots-dialog.compo
 export class DashboardComponent implements OnInit {
   // stations -> binded to map component
   stations: Station[];
+  loadingStations: boolean = false;
+  progressSpinner: object = {
+    mode: 'indeterminate',
+    color: 'warn',
+    diameter: 35,
+    strokeWidth: 5
+  };
 
   // realtime stations status:
   updatedStations: Station[];
@@ -59,6 +66,7 @@ export class DashboardComponent implements OnInit {
 
   // on init get all station from Bicing api via my koa server
   addStations () {
+    this.loadingStations = true;
     this.apiClientService.getStations().subscribe(response => {
       this.stations = response.stations.map(station => {
         return this.sanitizeStation(
@@ -70,6 +78,7 @@ export class DashboardComponent implements OnInit {
           'slots'
         );
       });
+      this.loadingStations = false;
     });
   }
 
@@ -141,7 +150,7 @@ export class DashboardComponent implements OnInit {
           if (this.noSlots) this.openDialog();
         }
       });
-    }, 10000);
+    }, 30000);
   }
 
   clearCheckInterval () {
