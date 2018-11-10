@@ -1,5 +1,6 @@
 import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
 import { Station } from '../station';
+import { GoogleMapsAPIWrapper } from '@agm/core';
 
 @Component({
   selector: 'app-map',
@@ -9,10 +10,12 @@ import { Station } from '../station';
 export class MapComponent implements OnInit {
   title: string = 'Select destiny station';
   // map initial properties: center & zoom
-  currentLat: number;
-  currentLong: number;
+  currentLat: number = 41.3851;
+  currentLong: number = 2.1734;
+  currentLocationMarker: string = '../../assets/blue_marker.png';
   zoom: number = 14.5;
 
+  // to convert markers to a bike image (not using it)
   image: object = {
     url: '../../assets/2019_TImberjack_NX_Eagle_27.5_Org-uc-1_.jpg',
     scaledSize: {
@@ -21,15 +24,13 @@ export class MapComponent implements OnInit {
     }
   };
 
-  // '../../assets/2019_TImberjack_NX_Eagle_27.5_Org-uc-1_.jpg';
-
   @Input()
   stations: Station[];
 
   @Output()
   clickedStation = new EventEmitter<Station>();
 
-  constructor () {}
+  constructor (private map: GoogleMapsAPIWrapper) {}
 
   ngOnInit () {
     this.getUserLocation();
@@ -39,12 +40,20 @@ export class MapComponent implements OnInit {
     this.clickedStation.emit(station);
   }
 
+  // get user current location to center map
   getUserLocation () {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(position => {
-        this.currentLat = position.coords.latitude;
-        this.currentLong = position.coords.longitude;
+    // delay with the objective of UX -> first position is city center & thi pans to location
+    setTimeout(() => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          this.currentLat = position.coords.latitude;
+          this.currentLong = position.coords.longitude;
+        });
+      }
+      this.map.panTo({
+        lat: this.currentLat,
+        lng: this.currentLong
       });
-    }
+    }, 1000);
   }
 }

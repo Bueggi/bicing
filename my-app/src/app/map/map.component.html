@@ -15,9 +15,14 @@
       (markerClick)="clickedMarker(station)"
       [label]="station.id.toString()"
     >
-      <agm-info-window> <div>Hello world</div> </agm-info-window>
+      <!-- <agm-info-window> <div>Hello world</div> </agm-info-window> -->
     </agm-marker>
-    <agm-marker [latitude]="currentLat" [longitude]="currentLong"> </agm-marker>
+    <agm-marker
+      [iconUrl]="currentLocationMarker"
+      [latitude]="currentLat"
+      [longitude]="currentLong"
+    >
+    </agm-marker>
   </div>
 </agm-map>
 
