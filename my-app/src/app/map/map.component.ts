@@ -14,6 +14,10 @@ export class MapComponent implements OnInit {
   currentLocationMarker: string = '../../assets/blue_marker.png';
   zoom: number = 14.5;
 
+  origin: object;
+
+  destination: object;
+
   // to convert markers to a bike image (not using it)
   image: object = {
     url: '../../assets/2019_TImberjack_NX_Eagle_27.5_Org-uc-1_.jpg',
@@ -37,6 +41,14 @@ export class MapComponent implements OnInit {
 
   clickedMarker (station) {
     this.clickedStation.emit(station);
+    this.origin = {
+      latitude: 41.395009,
+      longitude: 2.196308
+    };
+    this.destination = {
+      latitude: 41.395905,
+      longitude: 2.192958
+    };
   }
 
   // get user current location to center map

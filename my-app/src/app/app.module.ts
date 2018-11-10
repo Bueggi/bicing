@@ -14,6 +14,7 @@ import { NoSlotsDialogComponent } from './no-slots-dialog/no-slots-dialog.compon
 import { NoSlotsComponent } from './no-slots/no-slots.component';
 import { HeaderComponent } from './header/header.component';
 import { LessThanMinComponent } from './less-than-min/less-than-min.component';
+import { DirectionsMapDirective } from './direction/direction.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { LessThanMinComponent } from './less-than-min/less-than-min.component';
   NoSlotsDialogComponent,
   NoSlotsComponent,
   HeaderComponent,
-  LessThanMinComponent
+  LessThanMinComponent,
+  DirectionsMapDirective
   ],
   imports: [
   BrowserModule,

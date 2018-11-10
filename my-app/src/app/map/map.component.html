@@ -23,6 +23,20 @@
     >
     </agm-marker>
   </div>
+  <div *ngIf="origin && destination">
+    <sebm-google-map-directions
+      [origin]="origin"
+      [destination]="destination"
+    ></sebm-google-map-directions>
+  </div>
+  <!--
+    <agm-direction
+      *ngIf="dir"
+      [origin]="origin"
+      [destination]="destination"
+      [visible]="show"
+    ></agm-direction>
+  -->
 </agm-map>
 
 <!-- [iconUrl]="image" -->
