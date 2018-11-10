@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { MatSelectChange } from '@angular/material';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +19,14 @@ export class HeaderComponent implements OnInit {
 
   selected: number;
 
+  @Output()
+  selectionChange = new EventEmitter<MatSelectChange>();
+
   constructor () {}
+
+  selectMinSlots ($event) {
+    this.selectionChange.emit($event.value);
+  }
 
   ngOnInit () {}
 }

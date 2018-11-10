@@ -7,7 +7,10 @@
   <a mat-button routerLink=".">Link</a>
 </div>
 
-<app-header [loadingStations]="loadingStations"></app-header>
+<app-header
+  (selectionChange)="setMinimumSlots($event)"
+  [loadingStations]="loadingStations"
+></app-header>
 
 <app-map
   [stations]="stations"

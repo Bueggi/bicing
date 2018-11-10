@@ -14,6 +14,9 @@ export class DashboardComponent implements OnInit {
   stations: Station[];
   loadingStations: boolean = false;
 
+  // minimun slots set by user to determine when it is going to be notified
+  minimunSlots: number;
+
   // realtime stations status:
   updatedStations: Station[];
   nearbyStations: Station[];
@@ -74,6 +77,11 @@ export class DashboardComponent implements OnInit {
       });
       this.loadingStations = false;
     });
+  }
+
+  setMinimumSlots (min) {
+    this.minimunSlots = min;
+    console.log(this.minimunSlots);
   }
 
   clickedMarker (clickedStation) {
