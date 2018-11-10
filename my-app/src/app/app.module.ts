@@ -13,6 +13,7 @@ import { MatComponentsModule } from './mat-components.module';
 import { NoSlotsDialogComponent } from './no-slots-dialog/no-slots-dialog.component';
 import { NoSlotsComponent } from './no-slots/no-slots.component';
 import { HeaderComponent } from './header/header.component';
+import { LessThanMinComponent } from './less-than-min/less-than-min.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { HeaderComponent } from './header/header.component';
   DashboardComponent,
   NoSlotsDialogComponent,
   NoSlotsComponent,
-  HeaderComponent
+  HeaderComponent,
+  LessThanMinComponent
   ],
   imports: [
   BrowserModule,
@@ -33,7 +35,7 @@ import { HeaderComponent } from './header/header.component';
     apiKey: environment.GMAPS_API_KEY
     })
   ],
-  entryComponents: [NoSlotsDialogComponent],
+  entryComponents: [NoSlotsDialogComponent, LessThanMinComponent],
   providers: [GoogleMapsAPIWrapper],
   bootstrap: [AppComponent]
   })

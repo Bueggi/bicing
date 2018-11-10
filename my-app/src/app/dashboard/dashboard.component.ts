@@ -3,6 +3,7 @@ import { ApiClientService } from '../api-client.service';
 import { Station } from '../station';
 import { MatDialog } from '@angular/material/dialog';
 import { NoSlotsDialogComponent } from '../no-slots-dialog/no-slots-dialog.component';
+import { LessThanMinComponent } from '../less-than-min/less-than-min.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -151,8 +152,9 @@ export class DashboardComponent implements OnInit {
           this.checkNoSlots(this.selectedStation);
           if (this.noSlots) this.openDialog();
         }
+        this.checkLessThanMinimum();
       });
-    }, 30000);
+    }, 10000);
   }
 
   clearCheckInterval () {
@@ -169,6 +171,23 @@ export class DashboardComponent implements OnInit {
 
   checkNoSlots (station) {
     this.noSlots = station.slots === 0 ? true : false;
+  }
+
+  checkLessThanMinimum () {
+    if (this.selectedStation.slots < this.minimunSlots && !this.noSlots) {
+      this.clearCheckInterval();
+      this.dialog
+        .open(LessThanMinComponent, {
+          data: {
+            stationData: this.selectedStation
+          }
+        })
+        .afterClosed()
+        .subscribe(() => {
+          this.minimunSlots = this.selectedStation.slots - 1;
+          this.checkSlots();
+        });
+    }
   }
 
   openDialog () {
