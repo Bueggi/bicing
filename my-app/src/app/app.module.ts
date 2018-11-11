@@ -15,6 +15,9 @@ import { NoSlotsComponent } from './no-slots/no-slots.component';
 import { HeaderComponent } from './header/header.component';
 import { LessThanMinComponent } from './less-than-min/less-than-min.component';
 import { DirectionsMapDirective } from './direction/direction.component';
+import { AppRoutingModule } from './app-routing.module';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { FavoriteStationsComponent } from './favorite-stations/favorite-stations.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,9 @@ import { DirectionsMapDirective } from './direction/direction.component';
   NoSlotsComponent,
   HeaderComponent,
   LessThanMinComponent,
-  DirectionsMapDirective
+  DirectionsMapDirective,
+  PageNotFoundComponent,
+  FavoriteStationsComponent
   ],
   imports: [
   BrowserModule,
@@ -35,7 +40,8 @@ import { DirectionsMapDirective } from './direction/direction.component';
   MatComponentsModule,
   AgmCoreModule.forRoot({
     apiKey: environment.GMAPS_API_KEY
-    })
+    }),
+  AppRoutingModule
   ],
   entryComponents: [NoSlotsDialogComponent, LessThanMinComponent],
   providers: [GoogleMapsAPIWrapper],
