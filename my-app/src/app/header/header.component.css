@@ -6,3 +6,10 @@ mat-card {
   padding: 0px;
   margin-bottom: 0.5em;
 }
+
+#header-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: baseline;
+}

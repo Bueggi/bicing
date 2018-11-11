@@ -22,6 +22,9 @@ export class HeaderComponent implements OnInit {
   @Output()
   selectionChange = new EventEmitter<MatSelectChange>();
 
+  @Output()
+  rideToStation = new EventEmitter();
+
   constructor () {}
 
   selectMinSlots ($event) {
@@ -29,4 +32,8 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit () {}
+
+  ride () {
+    this.rideToStation.emit();
+  }
 }

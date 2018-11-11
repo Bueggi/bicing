@@ -115,13 +115,15 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  goToSelectedStation () {
-    const newDestination = {};
-    newDestination.latitude = this.selectedStation.latitude;
-    newDestination.longitude = this.selectedStation.longitude;
-    console.log(newDestination);
+  rideToStation () {
+    if (this.selectedStation) {
+      const newDestination = {};
+      newDestination.latitude = this.selectedStation.latitude;
+      newDestination.longitude = this.selectedStation.longitude;
+      console.log(newDestination);
 
-    this.destination = newDestination;
+      this.destination = newDestination;
+    }
   }
 
   //checkSlots creates an interval to check real time changes in slots
