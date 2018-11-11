@@ -28,6 +28,9 @@ export class DashboardComponent implements OnInit {
   // selectedStation -> binded to the station component
   selectedStation: Station;
 
+  // variable -> binded to map component, when set map renders route (direction)
+  destination: object;
+
   // variable to save latest data of selected station (initialized with selectedStation)
   checkedStation = this.selectedStation;
 
@@ -112,6 +115,15 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  goToSelectedStation () {
+    const newDestination = {};
+    newDestination.latitude = this.selectedStation.latitude;
+    newDestination.longitude = this.selectedStation.longitude;
+    console.log(newDestination);
+
+    this.destination = newDestination;
+  }
+
   //checkSlots creates an interval to check real time changes in slots
   checkSlots () {
     this.clearCheckInterval();
@@ -161,14 +173,6 @@ export class DashboardComponent implements OnInit {
     if (this.interval) clearInterval(this.interval);
   }
 
-  // conververt string to number values of desired input station's keys
-  sanitizeStation (requestedStation, ...keys) {
-    keys.forEach(key => {
-      requestedStation[key] = parseFloat(requestedStation[key]);
-    });
-    return requestedStation;
-  }
-
   checkNoSlots (station) {
     this.noSlots = station.slots === 0 ? true : false;
   }
@@ -190,6 +194,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  // opens no more slots dialoge: renders a dialogue with nearby stations
   openDialog () {
     this.clearCheckInterval();
     const nearbyStationsWithSlots = this.nearbyStations.filter(
@@ -208,6 +213,14 @@ export class DashboardComponent implements OnInit {
         const newSelectedStation = this.stations.find(el => el.id === result);
         this.clickedMarker(newSelectedStation);
       });
+  }
+
+  // conververt string to number values of desired input station's keys
+  sanitizeStation (requestedStation, ...keys) {
+    keys.forEach(key => {
+      requestedStation[key] = parseFloat(requestedStation[key]);
+    });
+    return requestedStation;
   }
 }
 

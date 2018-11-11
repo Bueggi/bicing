@@ -14,9 +14,11 @@ export class MapComponent implements OnInit {
   currentLocationMarker: string = '../../assets/blue_marker.png';
   zoom: number = 14.5;
 
+  // when origin & destination are ser the map display the route
+  // origin: set to geolocation coords (by getUserLocation function)
   origin: object;
-
-  destination: object;
+  // destination: set when clicking go to destination
+  @Input() destination: object;
 
   // to convert markers to a bike image (not using it)
   image: object = {
@@ -41,14 +43,6 @@ export class MapComponent implements OnInit {
 
   clickedMarker (station) {
     this.clickedStation.emit(station);
-    this.origin = {
-      latitude: 41.395009,
-      longitude: 2.196308
-    };
-    this.destination = {
-      latitude: 41.395905,
-      longitude: 2.192958
-    };
   }
 
   // get user current location to center map
@@ -59,6 +53,10 @@ export class MapComponent implements OnInit {
         navigator.geolocation.getCurrentPosition(position => {
           this.currentLat = position.coords.latitude;
           this.currentLong = position.coords.longitude;
+          this.origin = {
+            latitude: this.currentLat,
+            longitude: this.currentLong
+          };
         });
       }
       this.map.panTo({

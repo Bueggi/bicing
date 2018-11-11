@@ -2,7 +2,9 @@
   <button (click)="selectBikes()" mat-button matTooltip="Info about the action">
     Bikes
   </button>
-  <button (click)="selectSlots()" mat-button color="primary">Parking</button>
+  <button (click)="goToSelectedStation()" mat-button color="primary">
+    Parking
+  </button>
   <button mat-button color="warn" (click)="openDialog()">Warn</button>
   <button mat-button (click)="checkLessThanMinimum()">Warn</button>
 </div>
@@ -15,6 +17,7 @@
 <app-map
   [stations]="stations"
   (clickedStation)="clickedMarker($event)"
+  [destination]="destination"
 ></app-map>
 
 <app-station
