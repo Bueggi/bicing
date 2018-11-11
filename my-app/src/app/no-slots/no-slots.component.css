@@ -1,3 +1,8 @@
+#no-slots-card {
+  height: 15.5vh;
+  margin-top: 0.5em;
+}
+
 #station-no-content {
   display: flex;
   justify-content: center;

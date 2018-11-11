@@ -1,9 +1,6 @@
-mat-card {
-  margin-top: 0.5em;
-}
-
 #station {
-  height: 25vh;
+  height: 15.5vh;
+  margin-top: 0.5em;
 }
 
 #station-content-opn {
