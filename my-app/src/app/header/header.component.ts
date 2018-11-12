@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit {
   progressSpinner: ProgressSpinnerData = {
     mode: 'indeterminate',
     color: 'warn',
-    diameter: 70,
+    diameter: 40,
     strokeWidth: 5
   };
 

@@ -1,43 +1,17 @@
-<!-- <div style="text-align:center"> -->
 <div>
-  <div class="example-button-row">
-    <button
-      routerLink="/favorite"
-      mat-button
-      matTooltip="Info about the action"
-    >
-      Map
-    </button>
-    <button (click)="goToSelectedStation()" mat-button color="primary">
-      Fav Stations
-    </button>
-    <button mat-button color="warn" (click)="openDialog()">Warn</button>
-    <button mat-button (click)="checkLessThanMinimum()">Warn</button>
-  </div>
-
+  <app-navbar></app-navbar>
   <app-header
     (selectionChange)="setMinimumSlots($event)"
     (rideToStation)="rideToStation($event)"
     [loadingStations]="loadingStations"
   ></app-header>
-
   <app-map
     [stations]="stations"
     (clickedStation)="clickedMarker($event)"
     [destination]="destination"
   ></app-map>
-
   <app-station
-    *ngIf="!loadingSelectedStation && selectedStation && !noSlots"
+    *ngIf="!loadingSelectedStation && selectedStation"
     [station]="selectedStation"
   ></app-station>
-
-  <app-station [station]="mock"></app-station>
-
-  <app-no-slots
-    *ngIf="noSlots"
-    [station]="selectedStation"
-    [nearbyStations]="nearbyStations"
-  ></app-no-slots>
 </div>
-<!-- <app-station [station]="mock"></app-station> -->

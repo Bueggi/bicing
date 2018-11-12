@@ -24,7 +24,10 @@
       >
     </div>
 
-    <mat-card-content id="station-content-opn" *ngIf="station.status === 'OPN'">
+    <mat-card-content
+      id="station-content-opn"
+      *ngIf="station.status === 'OPN' && station.slots > 0"
+    >
       <mat-chip-list id="content-list-of-chips">
         <mat-chip><mat-icon id="open-status-icon">done</mat-icon> </mat-chip>
         <mat-chip color="primary" selected id="parking-chip">
@@ -35,6 +38,16 @@
           >{{ station.bikes }}
           <mat-icon id="bike-number-icon">directions_bike</mat-icon>
         </mat-chip>
+      </mat-chip-list>
+    </mat-card-content>
+
+    <mat-card-content
+      id="station-no-content"
+      *ngIf="station.status === 'OPN' && station.slots === 0"
+    >
+      <mat-icon id="no-slots-status-icon">cancel</mat-icon>
+      <mat-chip-list id="content-list-of-chips">
+        <mat-chip> NO SLOTS AVAILABLE </mat-chip>
       </mat-chip-list>
     </mat-card-content>
 
