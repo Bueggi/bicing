@@ -4,7 +4,8 @@ mat-icon {
 
 mat-card {
   padding: 0px;
-  margin-bottom: 0.5em;
+  padding-top: 0.2em;
+  margin-bottom: 0.3em;
 }
 
 #header-form {

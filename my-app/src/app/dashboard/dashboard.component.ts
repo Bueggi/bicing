@@ -4,6 +4,7 @@ import { Station } from '../station';
 import { MatDialog } from '@angular/material/dialog';
 import { NoSlotsDialogComponent } from '../no-slots-dialog/no-slots-dialog.component';
 import { LessThanMinComponent } from '../less-than-min/less-than-min.component';
+import { FaovoritStationsService } from '../faovorit-stations.service';
 
 declare interface Coordinates {
   latitude: number;
@@ -63,7 +64,8 @@ export class DashboardComponent implements OnInit {
 
   constructor (
     private apiClientService: ApiClientService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private favoriteStations: FaovoritStationsService
   ) {}
 
   ngOnInit () {
@@ -110,6 +112,8 @@ export class DashboardComponent implements OnInit {
       this.nearStationsId = this.selectedStation.nearbyStations
         .split(', ')
         .map(el => parseInt(el));
+
+      this.favoriteStations.add(this.selectedStation);
 
       this.checkNoSlots(this.selectedStation);
       if (this.noSlots) {

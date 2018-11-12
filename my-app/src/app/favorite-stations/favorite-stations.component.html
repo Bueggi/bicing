@@ -1,3 +1,6 @@
-<div *ngFor="let station of stations">
-  <app-station [station]="station"></app-station>
+<h2>FAVSTATIONS</h2>
+<div *ngIf="favoriteStationsService.favoriteStations.length">
+  <div *ngFor="let station of favoriteStationsService.favoriteStations">
+    <app-station [station]="station"></app-station>
+  </div>
 </div>

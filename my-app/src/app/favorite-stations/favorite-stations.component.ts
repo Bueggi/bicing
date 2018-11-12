@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Station } from '../station';
+import { FaovoritStationsService } from '../faovorit-stations.service';
 
 @Component({
   selector: 'app-favorite-stations',
@@ -36,7 +37,7 @@ export class FavoriteStationsComponent implements OnInit {
     }
   ];
 
-  constructor () {}
+  constructor (public favoriteStationsService: FaovoritStationsService) {}
 
   ngOnInit () {}
 }
