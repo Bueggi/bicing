@@ -19,7 +19,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { FavoriteStationsComponent } from './favorite-stations/favorite-stations.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -44,7 +43,9 @@ import { environment } from '../environments/environment';
     apiKey: environment.GMAPS_API_KEY
     }),
   AppRoutingModule,
-  ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+  ServiceWorkerModule.register('ngsw-worker.js', {
+    enabled: environment.production
+    })
   ],
   entryComponents: [NoSlotsDialogComponent, LessThanMinComponent],
   providers: [GoogleMapsAPIWrapper],
