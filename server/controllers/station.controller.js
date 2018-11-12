@@ -6,4 +6,5 @@ exports.getStations = async (ctx, next) => {
   console.log('55: solts:', JSON.parse(info).stations[52].slots);
 
   ctx.body = info;
+  ctx.status = 200;
 };
