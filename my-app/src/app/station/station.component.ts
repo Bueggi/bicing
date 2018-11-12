@@ -10,6 +10,8 @@ export class StationComponent implements OnInit {
   @Input()
   station: Station;
 
+  added: boolean = false;
+
   constructor () {}
 
   ngOnInit () {}

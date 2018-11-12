@@ -1,6 +1,30 @@
 #station {
   height: 15.5vh;
   margin-top: 0.5em;
+  display: flex;
+  flex-direction: column;
+}
+
+#station-header {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  text-align: center;
+}
+
+mat-card-header {
+  height: 70%;
+  display: flex;
+}
+
+#add-icon {
+  padding: 0.2em;
+  color: #303f9f;
+}
+
+#add-icon-checked {
+  padding: 0.2em;
+  color: #00b248;
 }
 
 #station-content-opn {

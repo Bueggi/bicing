@@ -1,12 +1,28 @@
 <div *ngIf="station">
   <mat-card id="station">
-    <mat-card-header>
-      <div mat-card-avatar><mat-icon>directions_bike</mat-icon></div>
-      <mat-card-title
-        >{{ station.streetName }} {{ station.streetNumber }}</mat-card-title
+    <div id="station-header">
+      <div><mat-icon>directions_bike</mat-icon></div>
+      <mat-card-header>
+        <div>
+          <mat-card-title
+            >{{ station.streetName }} {{ station.streetNumber }}</mat-card-title
+          >
+          <mat-card-subtitle>Station Nº {{ station.id }}</mat-card-subtitle>
+        </div>
+      </mat-card-header>
+      <mat-icon
+        *ngIf="!added"
+        id="add-icon"
+        (click)="addToFavorites(station.id)"
+        >library_add</mat-icon
       >
-      <mat-card-subtitle>Station Nº {{ station.id }}</mat-card-subtitle>
-    </mat-card-header>
+      <mat-icon
+        *ngIf="added"
+        id="add-icon-checked"
+        (click)="removeFromFavorites(station.id)"
+        >playlist_add_check</mat-icon
+      >
+    </div>
 
     <mat-card-content id="station-content-opn" *ngIf="station.status === 'OPN'">
       <mat-chip-list id="content-list-of-chips">
