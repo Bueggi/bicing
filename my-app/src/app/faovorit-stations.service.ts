@@ -12,12 +12,20 @@ export class FaovoritStationsService {
 
   add (station: Station) {
     const isAlreadyFav = this.favoriteStations.find(el => el.id === station.id);
-    if (!isAlreadyFav) this.favoriteStations.push(station);
+    if (!isAlreadyFav) {
+      // station.addedTofavourite = true;
+      this.favoriteStations.push(station);
+    }
   }
 
   remove (station: Station) {
     this.favoriteStations = this.favoriteStations.filter(
       el => el.id !== station.id
     );
+  }
+
+  isFavorite (station) {
+    const isAlreadyFav = this.favoriteStations.find(el => el.id === station.id);
+    return Boolean(isAlreadyFav);
   }
 }

@@ -1,4 +1,5 @@
-<div style="text-align:center">
+<!-- <div style="text-align:center"> -->
+<div>
   <div class="example-button-row">
     <button
       routerLink="/favorite"
@@ -30,6 +31,8 @@
     *ngIf="!loadingSelectedStation && selectedStation && !noSlots"
     [station]="selectedStation"
   ></app-station>
+
+  <app-station [station]="mock"></app-station>
 
   <app-no-slots
     *ngIf="noSlots"

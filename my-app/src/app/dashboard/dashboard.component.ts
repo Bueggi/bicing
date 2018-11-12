@@ -65,7 +65,7 @@ export class DashboardComponent implements OnInit {
   constructor (
     private apiClientService: ApiClientService,
     private dialog: MatDialog,
-    private favoriteStations: FaovoritStationsService
+    private favoriteStationsService: FaovoritStationsService
   ) {}
 
   ngOnInit () {
@@ -109,11 +109,13 @@ export class DashboardComponent implements OnInit {
         'slots'
       );
 
+      if (this.favoriteStationsService.isFavorite(this.selectedStation)) {
+        this.selectedStation.addedTofavourite = true;
+      }
+
       this.nearStationsId = this.selectedStation.nearbyStations
         .split(', ')
         .map(el => parseInt(el));
-
-      this.favoriteStations.add(this.selectedStation);
 
       this.checkNoSlots(this.selectedStation);
       if (this.noSlots) {

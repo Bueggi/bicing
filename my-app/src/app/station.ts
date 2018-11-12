@@ -10,4 +10,5 @@ export class Station {
   bikes: number;
   nearbyStations: string;
   status: string;
+  addedTofavourite?: boolean;
 }

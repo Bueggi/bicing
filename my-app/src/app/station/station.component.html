@@ -11,15 +11,15 @@
         </div>
       </mat-card-header>
       <mat-icon
-        *ngIf="!added"
+        *ngIf="!station.addedTofavourite"
         id="add-icon"
-        (click)="addToFavorites(station.id)"
+        (click)="addToFavorites(station)"
         >library_add</mat-icon
       >
       <mat-icon
-        *ngIf="added"
+        *ngIf="station.addedTofavourite"
         id="add-icon-checked"
-        (click)="removeFromFavorites(station.id)"
+        (click)="removeFromFavorites(station)"
         >playlist_add_check</mat-icon
       >
     </div>
