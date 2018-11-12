@@ -6,7 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
   })
 export class ApiClientService {
-  baseUrl: string = 'http://192.168.1.123:3000';
+  baseUrl: string = 'http://localhost:3000';
+  // 192.168.1.123
 
   httpOptions = {
     headers: new HttpHeaders({
