@@ -1,6 +1,13 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatSelectChange } from '@angular/material';
 
+declare interface ProgressSpinnerData {
+  mode: string;
+  color: string;
+  diameter: number;
+  strokeWidth: number;
+}
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -10,7 +17,7 @@ export class HeaderComponent implements OnInit {
   @Input()
   loadingStations: boolean;
 
-  progressSpinner: object = {
+  progressSpinner: ProgressSpinnerData = {
     mode: 'indeterminate',
     color: 'warn',
     diameter: 70,

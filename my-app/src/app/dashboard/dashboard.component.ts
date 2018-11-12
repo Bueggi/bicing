@@ -5,6 +5,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { NoSlotsDialogComponent } from '../no-slots-dialog/no-slots-dialog.component';
 import { LessThanMinComponent } from '../less-than-min/less-than-min.component';
 
+declare interface Coordinates {
+  latitude: number;
+  longitude: number;
+}
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -117,9 +122,10 @@ export class DashboardComponent implements OnInit {
 
   rideToStation () {
     if (this.selectedStation) {
-      const newDestination = {};
-      newDestination.latitude = this.selectedStation.latitude;
-      newDestination.longitude = this.selectedStation.longitude;
+      const newDestination: Coordinates = {
+        latitude: this.selectedStation.latitude,
+        longitude: this.selectedStation.longitude
+      };
       console.log(newDestination);
 
       this.destination = newDestination;
