@@ -11,10 +11,13 @@ export class FaovoritStationsService {
   favoriteStations: Station[] = [];
 
   add (station: Station) {
-    this.favoriteStations.push(station);
+    const isAlreadyFav = this.favoriteStations.find(el => el.id === station.id);
+    if (!isAlreadyFav) this.favoriteStations.push(station);
   }
 
-  clear () {
-    this.favoriteStations = [];
+  remove (station: Station) {
+    this.favoriteStations = this.favoriteStations.filter(
+      el => el.id !== station.id
+    );
   }
 }
