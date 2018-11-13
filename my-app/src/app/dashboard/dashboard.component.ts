@@ -92,7 +92,6 @@ export class DashboardComponent implements OnInit {
 
   setMinimumSlots (min) {
     this.minimunSlots = min;
-    console.log(this.minimunSlots);
   }
 
   clickedMarker (clickedStation) {
@@ -132,7 +131,6 @@ export class DashboardComponent implements OnInit {
         latitude: this.selectedStation.latitude,
         longitude: this.selectedStation.longitude
       };
-      console.log(newDestination);
 
       this.destination = newDestination;
     }
@@ -223,7 +221,6 @@ export class DashboardComponent implements OnInit {
       })
       .afterClosed()
       .subscribe(result => {
-        console.log(result);
         const newSelectedStation = this.stations.find(el => el.id === result);
         this.clickedMarker(newSelectedStation);
       });

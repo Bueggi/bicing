@@ -18,7 +18,7 @@ export class FavoriteStationsComponent implements OnInit, OnDestroy {
 
   ngOnInit () {
     // using apiClientService to update info every 10 sec
-    // then sending to fav-StationsService to update them
+    // then sending to fav-StationsService to update and re-render
     this.subscription = this.apiClientService
       .checkStationsStatus()
       .subscribe(response => {

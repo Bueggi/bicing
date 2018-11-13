@@ -29,12 +29,14 @@ export class FaovoritStationsService {
     return Boolean(isAlreadyFav);
   }
 
+  // update slots status
   updateFavoriteStations (stations) {
-    console.log(stations);
-
     stations.forEach(el => {
       this.favoriteStations.forEach(favStation => {
-        if (el.id === favStation.id) favStation.slots = el.slots;
+        if (el.id === favStation.id) {
+          favStation.slots = el.slots;
+          favStation.bikes = el.bikes;
+        }
       });
     });
   }
