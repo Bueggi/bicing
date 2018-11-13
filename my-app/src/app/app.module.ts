@@ -18,6 +18,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { FavoriteStationsComponent } from './favorite-stations/favorite-stations.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { NavbarComponent } from './navbar/navbar.component';
+import { NearestStationsComponent } from './nearest-stations/nearest-stations.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { NavbarComponent } from './navbar/navbar.component';
   LessThanMinComponent,
   PageNotFoundComponent,
   FavoriteStationsComponent,
-  NavbarComponent
+  NavbarComponent,
+  NearestStationsComponent
   ],
   imports: [
   BrowserModule,

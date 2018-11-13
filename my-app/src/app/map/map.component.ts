@@ -115,6 +115,5 @@ export class MapComponent implements OnInit {
       }
     }
     return this.stations[closest];
-    // console.log(this.stations[closest].id);
   }
 }

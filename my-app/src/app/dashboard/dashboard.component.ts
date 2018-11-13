@@ -98,7 +98,6 @@ export class DashboardComponent implements OnInit {
   getIinitialStation () {
     setTimeout(() => {
       this.initialStation = this.favoriteStationsService.getInitialStation();
-      console.log('dash', this.initialStation);
     }, 1300);
   }
 
@@ -127,6 +126,12 @@ export class DashboardComponent implements OnInit {
       this.nearStationsId = this.selectedStation.nearbyStations
         .split(', ')
         .map(el => parseInt(el));
+
+      // repeated below, could be refactored
+      const nearStations = this.stations.filter(el =>
+        this.nearStationsId.includes(el.id)
+      );
+      this.favoriteStationsService.addNearestStations(nearStations);
 
       this.checkNoSlots(this.selectedStation);
       if (this.noSlots) {
