@@ -5,6 +5,7 @@
   [latitude]="currentLat"
   [longitude]="currentLong"
   [zoom]="zoom"
+  [streetViewControl]="streetViewControl"
 >
   <div *ngIf="stations">
     <agm-marker
@@ -13,6 +14,7 @@
       [longitude]="station.longitude"
       (markerClick)="clickedMarker(station)"
       [label]="station.slots.toString()"
+      [opacity]="opacity"
     >
       <!-- <agm-info-window> <div>Hello world</div> </agm-info-window> -->
     </agm-marker>
@@ -20,6 +22,7 @@
       [iconUrl]="currentLocationMarker"
       [latitude]="currentLat"
       [longitude]="currentLong"
+      [openInfoWindow]="openInfoWindow"
     >
     </agm-marker>
   </div>
@@ -29,14 +32,4 @@
       [destination]="destination"
     ></agm-direction>
   </div>
-  <!--
-    <agm-direction
-      *ngIf="dir"
-      [origin]="origin"
-      [destination]="destination"
-      [visible]="show"
-    ></agm-direction>
-  -->
 </agm-map>
-
-<!-- [iconUrl]="image" -->
