@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, timer, of } from 'rxjs';
+import { switchMap, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,13 @@ export class ApiClientService {
   };
 
   constructor (private http: HttpClient) {}
+
+  checkStationsStatus () {
+    return timer(0, 10000).pipe(
+      switchMap(_ => this.http.get<any>(`${this.baseUrl}/stations`)),
+      catchError(error => of(`Bad request: ${error}`))
+    );
+  }
 
   getStations (): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/stations`);
