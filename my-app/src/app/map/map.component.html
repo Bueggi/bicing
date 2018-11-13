@@ -24,10 +24,10 @@
     </agm-marker>
   </div>
   <div *ngIf="origin && destination">
-    <sebm-google-map-directions
+    <agm-direction
       [origin]="origin"
       [destination]="destination"
-    ></sebm-google-map-directions>
+    ></agm-direction>
   </div>
   <!--
     <agm-direction

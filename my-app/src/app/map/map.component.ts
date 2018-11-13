@@ -13,7 +13,8 @@ export class MapComponent implements OnInit {
   currentLong: number = 2.1734;
   currentLocationMarker: string = '../../assets/blue_marker.png';
   zoom: number = 14.5;
-
+  travelMode: string = 'BICYCLING';
+  // using agm-directions https://robby570.tw/Agm-Direction-Docs/index.html
   // when origin & destination are ser the map display the route
   // origin: set to geolocation coords (by getUserLocation function)
   origin: object;
@@ -54,8 +55,8 @@ export class MapComponent implements OnInit {
           this.currentLat = position.coords.latitude;
           this.currentLong = position.coords.longitude;
           this.origin = {
-            latitude: this.currentLat,
-            longitude: this.currentLong
+            lat: this.currentLat,
+            lng: this.currentLong
           };
         });
       }

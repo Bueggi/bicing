@@ -7,8 +7,8 @@ import { LessThanMinComponent } from '../less-than-min/less-than-min.component';
 import { FaovoritStationsService } from '../faovorit-stations.service';
 
 declare interface Coordinates {
-  latitude: number;
-  longitude: number;
+  lat: number;
+  lng: number;
 }
 
 @Component({
@@ -128,8 +128,8 @@ export class DashboardComponent implements OnInit {
   rideToStation () {
     if (this.selectedStation) {
       const newDestination: Coordinates = {
-        latitude: this.selectedStation.latitude,
-        longitude: this.selectedStation.longitude
+        lat: this.selectedStation.latitude,
+        lng: this.selectedStation.longitude
       };
 
       this.destination = newDestination;
