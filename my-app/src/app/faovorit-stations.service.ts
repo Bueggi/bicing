@@ -10,6 +10,9 @@ export class FaovoritStationsService {
 
   favoriteStations: Station[] = [];
 
+  // initialStation -> should be another service
+  initialStation: Station;
+
   add (station: Station) {
     const isAlreadyFav = this.favoriteStations.find(el => el.id === station.id);
     if (!isAlreadyFav) {
@@ -39,5 +42,13 @@ export class FaovoritStationsService {
         }
       });
     });
+  }
+
+  setInitialStation (station) {
+    this.initialStation = station;
+  }
+
+  getInitialStation () {
+    return this.initialStation;
   }
 }

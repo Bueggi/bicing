@@ -14,4 +14,6 @@
     *ngIf="!loadingSelectedStation && selectedStation"
     [station]="selectedStation"
   ></app-station>
+  <app-station *ngIf="!selectedStation" [station]="initialStation">
+  </app-station>
 </div>

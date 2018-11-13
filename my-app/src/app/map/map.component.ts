@@ -1,6 +1,7 @@
 import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
 import { Station } from '../station';
 import { GoogleMapsAPIWrapper } from '@agm/core';
+import { FaovoritStationsService } from '../faovorit-stations.service';
 
 @Component({
   selector: 'app-map',
@@ -25,6 +26,9 @@ export class MapComponent implements OnInit {
   @Input() destination: object;
   travelMode: string = 'BICYCLING';
 
+  // nearest station to current location -> send to dashboard via service
+  initialStation: Station;
+
   // to convert markers to a bike image (not using it)
   image: object = {
     url: '../../assets/2019_TImberjack_NX_Eagle_27.5_Org-uc-1_.jpg',
@@ -40,7 +44,10 @@ export class MapComponent implements OnInit {
   @Output()
   clickedStation = new EventEmitter<Station>();
 
-  constructor (private map: GoogleMapsAPIWrapper) {}
+  constructor (
+    private map: GoogleMapsAPIWrapper,
+    private favoriteStationsService: FaovoritStationsService
+  ) {}
 
   ngOnInit () {
     this.getUserLocation();
@@ -68,6 +75,46 @@ export class MapComponent implements OnInit {
         lat: this.currentLat,
         lng: this.currentLong
       });
-    }, 500);
+
+      // finds nearest station to current location (would be nice to do it without setTimeout :))
+      setTimeout(() => {
+        this.initialStation = this.find_closest_marker(
+          this.currentLat,
+          this.currentLong
+        );
+        this.favoriteStationsService.setInitialStation(this.initialStation);
+      }, 700);
+    }, 300);
+  }
+
+  rad (x) {
+    return (x * Math.PI) / 180;
+  }
+  find_closest_marker (currentLat, currentLong) {
+    var lat = currentLat;
+    var lng = currentLong;
+    var R = 6371; // radius of earth in km
+    var distances = [];
+    var closest = -1;
+    for (let i = 0; i < this.stations.length; i++) {
+      var mlat = this.stations[i].latitude;
+      var mlng = this.stations[i].longitude;
+      var dLat = this.rad(mlat - lat);
+      var dLong = this.rad(mlng - lng);
+      var a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(this.rad(lat)) *
+          Math.cos(this.rad(lat)) *
+          Math.sin(dLong / 2) *
+          Math.sin(dLong / 2);
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      var d = R * c;
+      distances[i] = d;
+      if (closest == -1 || d < distances[closest]) {
+        closest = i;
+      }
+    }
+    return this.stations[closest];
+    // console.log(this.stations[closest].id);
   }
 }

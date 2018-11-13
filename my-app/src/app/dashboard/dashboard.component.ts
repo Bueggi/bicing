@@ -31,6 +31,9 @@ export class DashboardComponent implements OnInit {
   // variable to save intervalId and be able to clearInterval
   interval: any;
 
+  // initialStation -> to render while the user did not select one
+  initialStation: Station;
+
   // selectedStation -> binded to the station component
   selectedStation: Station;
 
@@ -70,6 +73,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit () {
     this.addStations();
+    this.getIinitialStation();
   }
 
   // on init get all station from Bicing api via my koa server
@@ -88,6 +92,14 @@ export class DashboardComponent implements OnInit {
       });
       this.loadingStations = false;
     });
+  }
+
+  // would be better to use observables to achieve this
+  getIinitialStation () {
+    setTimeout(() => {
+      this.initialStation = this.favoriteStationsService.getInitialStation();
+      console.log('dash', this.initialStation);
+    }, 1300);
   }
 
   setMinimumSlots (min) {
