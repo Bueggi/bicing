@@ -8,6 +8,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   exports: [
@@ -19,7 +20,8 @@ import { MatSelectModule } from '@angular/material/select';
   MatDialogModule,
   MatChipsModule,
   MatProgressSpinnerModule,
-  MatSelectModule
+  MatSelectModule,
+  MatTabsModule
   ]
   })
 export class MatComponentsModule {}

@@ -1,4 +1,5 @@
 #navbar {
   display: flex;
   justify-content: space-evenly;
+  margin-bottom: 2px;
 }
