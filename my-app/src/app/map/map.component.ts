@@ -29,6 +29,10 @@ export class MapComponent implements OnInit {
   // nearest station to current location -> send to dashboard via service
   initialStation: Station;
 
+  renderOptions = {
+    suppressMarkers: true
+  };
+
   // to convert markers to a bike image (not using it)
   image: object = {
     url: '../../assets/2019_TImberjack_NX_Eagle_27.5_Org-uc-1_.jpg',
