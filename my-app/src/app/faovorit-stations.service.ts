@@ -28,4 +28,14 @@ export class FaovoritStationsService {
     const isAlreadyFav = this.favoriteStations.find(el => el.id === station.id);
     return Boolean(isAlreadyFav);
   }
+
+  updateFavoriteStations (stations) {
+    console.log(stations);
+
+    stations.forEach(el => {
+      this.favoriteStations.forEach(favStation => {
+        if (el.id === favStation.id) favStation.slots = el.slots;
+      });
+    });
+  }
 }

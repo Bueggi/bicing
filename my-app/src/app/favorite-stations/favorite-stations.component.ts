@@ -17,12 +17,33 @@ export class FavoriteStationsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit () {
+    // using apiClientService to update info every 10 sec
+    // then sending to fav-StationsService to update them
     this.subscription = this.apiClientService
       .checkStationsStatus()
-      .subscribe(result => console.log(result));
+      .subscribe(response => {
+        response.stations = response.stations.map(station => {
+          return this.sanitizeStation(
+            station,
+            'id',
+            'latitude',
+            'longitude',
+            'bikes',
+            'slots'
+          );
+        });
+        this.favoriteStationsService.updateFavoriteStations(response.stations);
+      });
   }
 
   ngOnDestroy () {
     this.subscription.unsubscribe();
+  }
+
+  sanitizeStation (requestedStation, ...keys) {
+    keys.forEach(key => {
+      requestedStation[key] = parseFloat(requestedStation[key]);
+    });
+    return requestedStation;
   }
 }
