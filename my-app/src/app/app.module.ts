@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { AgmDirectionModule } from 'agm-direction';
-import { environment } from 'src/environments/environment';
+import { environment } from '../environments/environment.prod';
 import { StationComponent } from './station/station.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MatComponentsModule } from './mat-components.module';
