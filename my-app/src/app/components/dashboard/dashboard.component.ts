@@ -73,7 +73,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit () {
     this.addStations();
-    this.getIinitialStation();
+    this.getInitialStation();
   }
 
   // on init get all station from Bicing api via my koa server
@@ -95,7 +95,7 @@ export class DashboardComponent implements OnInit {
   }
 
   // would be better to use observables to achieve this
-  getIinitialStation () {
+  getInitialStation () {
     setTimeout(() => {
       this.initialStation = this.favoriteStationsService.getInitialStation();
     }, 1300);
