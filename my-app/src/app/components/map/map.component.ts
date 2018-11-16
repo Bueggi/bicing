@@ -1,6 +1,6 @@
-import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Station } from '../../station';
-import { GoogleMapsAPIWrapper } from '@agm/core';
+import { GoogleMapsAPIWrapper, LatLngLiteral, AgmMap, LatLngBoundsLiteral, LatLngBounds } from '@agm/core';
 import { FavoriteStationsService } from '../../services/favorite-stations.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { FavoriteStationsService } from '../../services/favorite-stations.servic
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
   })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, AfterViewInit {
   // map initial properties: center & zoom
   currentLat: number = 41.3851;
   currentLong: number = 2.1734;
@@ -26,6 +26,10 @@ export class MapComponent implements OnInit {
   @Input()
   destination: object;
   travelMode: string = 'BICYCLING';
+
+  @ViewChild('AgmMap') agmMap: AgmMap;
+
+
 
   // nearest station to current location -> send to dashboard via service
   initialStation: Station;
@@ -50,12 +54,18 @@ export class MapComponent implements OnInit {
   clickedStation = new EventEmitter<Station>();
 
   constructor (
-    private map: GoogleMapsAPIWrapper,
+    public map: GoogleMapsAPIWrapper,
     private favoriteStationsService: FavoriteStationsService
   ) {}
 
   ngOnInit () {
     this.getUserLocation();
+
+  }
+
+  ngAfterViewInit() {
+    console.log('///////////////////////// ASDF');
+    this.map.getBounds().then(data => console.log('///////////////////', data), err => console.log(err));
   }
 
   clickedMarker (station) {
@@ -64,6 +74,12 @@ export class MapComponent implements OnInit {
 
   // get user current location to center map
   getUserLocation () {
+    console.log('got here');
+    console.log(this.map);
+
+    this.map.getBounds().then(data => console.log('DATA', data), err => console.log(err));
+    // console.log('getBounds', this.map.getBounds().then(data => console.log('DATA', data)));
+
     // delay with the objective of UX -> first position is city center & thi pans to location
     setTimeout(() => {
       if (navigator.geolocation) {
@@ -76,10 +92,13 @@ export class MapComponent implements OnInit {
           };
         });
       }
+
       this.map.panTo({
         lat: this.currentLat,
         lng: this.currentLong
       });
+
+
 
       // finds nearest station to current location (would be nice to do it without setTimeout :))
       setTimeout(() => {
