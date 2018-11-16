@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Station } from '../../station';
-import { FavoriteStationsService } from '../../favorite-stations.service';
+import { FavoriteStationsService } from '../../services/favorite-stations.service';
 
 @Component({
   selector: 'app-station',

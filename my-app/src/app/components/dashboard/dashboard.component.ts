@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiClientService } from '../../api-client.service';
+import { ApiClientService } from '../../services/api-client.service';
 import { Station } from '../../station';
 import { MatDialog } from '@angular/material/dialog';
 import { NoSlotsDialogComponent } from '../../view-components/no-slots-dialog/no-slots-dialog.component';
 import { LessThanMinComponent } from '../../view-components/less-than-min/less-than-min.component';
-import { FavoriteStationsService } from '../../favorite-stations.service';
+import { FavoriteStationsService } from '../../services/favorite-stations.service';
 
 declare interface Coordinates {
   lat: number;
