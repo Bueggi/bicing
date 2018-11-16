@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FavoriteStationsService } from '../favorite-stations.service';
-import { ApiClientService } from '../api-client.service';
+import { FavoriteStationsService } from '../../favorite-stations.service';
+import { ApiClientService } from '../../api-client.service';
 import { Subscription } from 'rxjs';
 
 @Component({

@@ -1,7 +1,7 @@
 import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
-import { Station } from '../station';
+import { Station } from '../../station';
 import { GoogleMapsAPIWrapper } from '@agm/core';
-import { FavoriteStationsService } from '../favorite-stations.service';
+import { FavoriteStationsService } from '../../favorite-stations.service';
 
 @Component({
   selector: 'app-map',
