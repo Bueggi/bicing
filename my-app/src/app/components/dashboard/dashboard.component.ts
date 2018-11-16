@@ -22,7 +22,7 @@ export class DashboardComponent implements OnInit {
   loadingStations: boolean = false;
 
   // minimun slots set by user to determine when it is going to be notified
-  minimunSlots: number;
+  minimumSlots: number;
 
   // realtime stations status:
   updatedStations: Station[];
@@ -102,7 +102,7 @@ export class DashboardComponent implements OnInit {
   }
 
   setMinimumSlots (min) {
-    this.minimunSlots = min;
+    this.minimumSlots = min;
   }
 
   clickedMarker (clickedStation) {
@@ -207,7 +207,7 @@ export class DashboardComponent implements OnInit {
   }
 
   checkLessThanMinimum () {
-    if (this.selectedStation.slots < this.minimunSlots && !this.noSlots) {
+    if (this.selectedStation.slots < this.minimumSlots && !this.noSlots) {
       this.clearCheckInterval();
       this.dialog
         .open(LessThanMinComponent, {
@@ -217,7 +217,7 @@ export class DashboardComponent implements OnInit {
         })
         .afterClosed()
         .subscribe(() => {
-          this.minimunSlots = this.selectedStation.slots - 1;
+          this.minimumSlots = this.selectedStation.slots - 1;
           this.checkSlots();
         });
     }
