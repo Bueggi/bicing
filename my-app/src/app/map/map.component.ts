@@ -1,7 +1,7 @@
 import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
 import { Station } from '../station';
 import { GoogleMapsAPIWrapper } from '@agm/core';
-import { FaovoritStationsService } from '../faovorit-stations.service';
+import { FavoriteStationsService } from '../favorite-stations.service';
 
 @Component({
   selector: 'app-map',
@@ -23,7 +23,8 @@ export class MapComponent implements OnInit {
   // origin: set to geolocation coords (by getUserLocation function)
   origin: object;
   // destination: set when clicking go to destination
-  @Input() destination: object;
+  @Input()
+  destination: object;
   travelMode: string = 'BICYCLING';
 
   // nearest station to current location -> send to dashboard via service
@@ -50,7 +51,7 @@ export class MapComponent implements OnInit {
 
   constructor (
     private map: GoogleMapsAPIWrapper,
-    private favoriteStationsService: FaovoritStationsService
+    private favoriteStationsService: FavoriteStationsService
   ) {}
 
   ngOnInit () {

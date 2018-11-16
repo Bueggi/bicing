@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FaovoritStationsService } from '../faovorit-stations.service';
+import { FavoriteStationsService } from '../favorite-stations.service';
 import { ApiClientService } from '../api-client.service';
 import { Subscription } from 'rxjs';
 
@@ -12,7 +12,7 @@ export class NearestStationsComponent implements OnInit {
   subscription: Subscription;
 
   constructor (
-    public favoriteStationsService: FaovoritStationsService,
+    public favoriteStationsService: FavoriteStationsService,
     private apiClientService: ApiClientService
   ) {}
 

@@ -5,7 +5,7 @@ import { Station } from './station';
 @Injectable({
   providedIn: 'root'
   })
-export class FaovoritStationsService {
+export class FavoriteStationsService {
   constructor () {}
 
   favoriteStations: Station[] = [];

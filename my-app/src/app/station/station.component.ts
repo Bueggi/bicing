@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Station } from '../station';
-import { FaovoritStationsService } from '../faovorit-stations.service';
+import { FavoriteStationsService } from '../favorite-stations.service';
 
 @Component({
   selector: 'app-station',
@@ -11,7 +11,7 @@ export class StationComponent implements OnInit {
   @Input()
   station: Station;
 
-  constructor (private favoriteStationsService: FaovoritStationsService) {}
+  constructor (private favoriteStationsService: FavoriteStationsService) {}
 
   ngOnInit () {}
 
