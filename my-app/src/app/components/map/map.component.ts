@@ -57,7 +57,7 @@ export class MapComponent implements OnInit {
   ) {}
 
   ngOnInit () {
-    this.getUserLocation();
+    this.getUserLocation().then(() => this.getClosestStation());
   }
 
   clickedMarker (station) {
@@ -65,33 +65,35 @@ export class MapComponent implements OnInit {
   }
 
   // get user current location to center map
-  getUserLocation () {
+  async getUserLocation () {
     // delay with the objective of UX -> first position is city center & thi pans to location
-    setTimeout(() => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(position => {
-          this.currentLat = position.coords.latitude;
-          this.currentLong = position.coords.longitude;
-          this.origin = {
-            lat: this.currentLat,
-            lng: this.currentLong
-          };
-        });
-      }
-      this.map.panTo({
+    // if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(position => {
+      console.log('positionnnn', position);
+      this.currentLat = position.coords.latitude;
+      this.currentLong = position.coords.longitude;
+      this.origin = {
         lat: this.currentLat,
         lng: this.currentLong
-      });
+      };
+    });
+    // }
 
-      // finds nearest station to current location (would be nice to do it without setTimeout :))
-      setTimeout(() => {
-        this.initialStation = this.find_closest_marker(
-          this.currentLat,
-          this.currentLong
-        );
-        this.initialStationService.setInitialStation(this.initialStation);
-      }, 700);
-    }, 300);
+    this.map.panTo({
+      lat: this.currentLat,
+      lng: this.currentLong
+    });
+  }
+
+  getClosestStation () {
+    if (this.stations && this.stations.length) {
+      console.log('calculating stuff');
+      this.initialStation = this.find_closest_marker(
+        this.currentLat,
+        this.currentLong
+      );
+      this.initialStationService.setInitStation(this.initialStation);
+    }
   }
 
   rad (x) {

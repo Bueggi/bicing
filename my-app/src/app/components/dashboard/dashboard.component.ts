@@ -98,9 +98,9 @@ export class DashboardComponent implements OnInit {
 
   // would be better to use observables to achieve this
   getInitialStation () {
-    setTimeout(() => {
-      this.initialStation = this.initialStationService.getInitialStation();
-    }, 1300);
+    this.initialStationService.currentStation.subscribe(
+      station => (this.initialStation = station)
+    );
   }
 
   setMinimumSlots (min) {
