@@ -1,7 +1,6 @@
 import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
 import { Station } from '../../station';
 import { GoogleMapsAPIWrapper } from '@agm/core';
-// import { FavoriteStationsService } from '../../services/favorite-stations.service';
 import { InitialStationService } from 'src/app/services/initial-station.service';
 
 @Component({
@@ -52,11 +51,14 @@ export class MapComponent implements OnInit {
 
   constructor (
     private map: GoogleMapsAPIWrapper,
-    // private favoriteStationsService: FavoriteStationsService,
     private initialStationService: InitialStationService
   ) {}
 
   ngOnInit () {
+    console.log('init!!!');
+  }
+
+  ngOnChanges () {
     this.getUserLocation().then(() => this.getClosestStation());
   }
 
@@ -67,9 +69,7 @@ export class MapComponent implements OnInit {
   // get user current location to center map
   async getUserLocation () {
     // delay with the objective of UX -> first position is city center & thi pans to location
-    // if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(position => {
-      console.log('positionnnn', position);
+    await navigator.geolocation.getCurrentPosition(position => {
       this.currentLat = position.coords.latitude;
       this.currentLong = position.coords.longitude;
       this.origin = {
@@ -77,7 +77,6 @@ export class MapComponent implements OnInit {
         lng: this.currentLong
       };
     });
-    // }
 
     this.map.panTo({
       lat: this.currentLat,
@@ -86,20 +85,17 @@ export class MapComponent implements OnInit {
   }
 
   getClosestStation () {
-    if (this.stations && this.stations.length) {
-      console.log('calculating stuff');
-      this.initialStation = this.find_closest_marker(
-        this.currentLat,
-        this.currentLong
-      );
-      this.initialStationService.setInitStation(this.initialStation);
-    }
+    this.initialStation = this.findClosestMarker(
+      this.currentLat,
+      this.currentLong
+    );
+    this.initialStationService.setInitStation(this.initialStation);
   }
 
   rad (x) {
     return (x * Math.PI) / 180;
   }
-  find_closest_marker (currentLat, currentLong) {
+  findClosestMarker (currentLat, currentLong) {
     var lat = currentLat;
     var lng = currentLong;
     var R = 6371; // radius of earth in km
