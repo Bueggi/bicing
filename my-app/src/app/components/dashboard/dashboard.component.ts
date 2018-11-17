@@ -203,6 +203,7 @@ export class DashboardComponent implements OnInit {
   }
 
   checkNoSlots (station) {
+    // can probably refactor this to implcitly return true or false
     this.noSlots = station.slots === 0 ? true : false;
   }
 
