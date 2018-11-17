@@ -3,6 +3,7 @@ import { Station } from '../../station';
 import { FavoriteStationsService } from '../../services/favorite-stations.service';
 import { GMapsServiceService } from 'src/app/services/g-maps-service.service';
 import { environment } from '../../../environments/environment.prod';
+import { google } from '@agm/core/services/google-maps-types';
 
 @Component({
   selector: 'app-map',
@@ -14,7 +15,7 @@ export class MapComponent implements AfterViewInit, OnChanges {
   currentLat = 41.3851;
   currentLong = 2.1734;
   currentLocationMarker = '../../assets/blue_marker.png';
-  zoom = 11;
+  zoom = 14.5;
   streetViewControl = false;
   openInfoWindow = false;
   opacity = 0.9;
@@ -84,16 +85,30 @@ export class MapComponent implements AfterViewInit, OnChanges {
 
   ngOnChanges() {
     this.getUserLocation();
+    this.addStationsToMap();
   }
 
   clickedMarker (station) {
     this.clickedStation.emit(station);
   }
 
+  addStationsToMap () {
+    if (this.stations && this.map) {
+      this.stations.filter(station => {
+        if (this.map.getBounds().j.contains(station.longitude)
+        && this.map.getBounds().l.contains(station.latitude)) {
+          const maps = window['google']['maps'];
+          const marker = new maps.Marker({position: {lat: station.latitude, lng: station.longitude}, map: this.map});
+        }
+      });
+    }
+  }
+
 
   // get user current location to center map
   getUserLocation () {
-    if(this.map) {
+    if (this.map) {
+      this.stations.map(station => console.log(station));
       console.log(this.map.getBounds());
     }
     // delay with the objective of UX -> first position is city center & thi pans to location
