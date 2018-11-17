@@ -100,18 +100,19 @@ export class MapComponent implements AfterViewInit, OnChanges, OnInit {
 
   addStationsToMap () {
     if (this.stations && this.map) {
-      console.log(this.map)
+      this.marker = [];
       this.stations.forEach(station => {
         if (this.map.getBounds().j.contains(station.longitude)
         && this.map.getBounds().l.contains(station.latitude)) {
           const maps = window['google']['maps'];
-          this.marker.push(new maps.Marker({
+          const newMarker = new maps.Marker({
             position: {
               lat: station.latitude, lng: station.longitude},
               map: this.map,
               label: station.slots.toString(),
-              onClick: this.clickedMarker
-            }));
+            });
+            newMarker.addListener('click', () => this.clickedMarker(station));
+          this.marker.push(newMarker);
         }
       });
     }

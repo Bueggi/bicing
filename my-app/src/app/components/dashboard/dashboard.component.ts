@@ -92,7 +92,7 @@ export class DashboardComponent implements OnInit {
     this.minimumSlots = min;
   }
 
-  clickedMarker (clickedStation) {
+  clickedMarker (clickedStation): void {
     this.apiClientService.getStations().subscribe(response => {
       const requestedStation = response.stations.find(
         el => el.id === clickedStation.id.toString()
