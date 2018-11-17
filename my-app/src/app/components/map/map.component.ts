@@ -1,4 +1,11 @@
-import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  EventEmitter,
+  Output,
+  OnInit,
+  OnChanges
+} from '@angular/core';
 import { Station } from '../../station';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 import { InitialStationService } from 'src/app/services/initial-station.service';
@@ -8,7 +15,7 @@ import { InitialStationService } from 'src/app/services/initial-station.service'
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
   })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnChanges {
   // map initial properties: center & zoom
   currentLat: number = 41.3851;
   currentLong: number = 2.1734;
