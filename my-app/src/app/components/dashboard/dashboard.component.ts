@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NoSlotsDialogComponent } from '../../view-components/no-slots-dialog/no-slots-dialog.component';
 import { LessThanMinComponent } from '../../view-components/less-than-min/less-than-min.component';
 import { FavoriteStationsService } from '../../services/favorite-stations.service';
+import { InitialStationService } from 'src/app/services/initial-station.service';
 
 declare interface Coordinates {
   lat: number;
@@ -68,7 +69,8 @@ export class DashboardComponent implements OnInit {
   constructor (
     private apiClientService: ApiClientService,
     private dialog: MatDialog,
-    private favoriteStationsService: FavoriteStationsService
+    private favoriteStationsService: FavoriteStationsService,
+    private initialStationService: InitialStationService
   ) {}
 
   ngOnInit () {
@@ -97,7 +99,7 @@ export class DashboardComponent implements OnInit {
   // would be better to use observables to achieve this
   getInitialStation () {
     setTimeout(() => {
-      this.initialStation = this.favoriteStationsService.getInitialStation();
+      this.initialStation = this.initialStationService.getInitialStation();
     }, 1300);
   }
 

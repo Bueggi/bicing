@@ -1,7 +1,8 @@
 import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
 import { Station } from '../../station';
 import { GoogleMapsAPIWrapper } from '@agm/core';
-import { FavoriteStationsService } from '../../services/favorite-stations.service';
+// import { FavoriteStationsService } from '../../services/favorite-stations.service';
+import { InitialStationService } from 'src/app/services/initial-station.service';
 
 @Component({
   selector: 'app-map',
@@ -51,7 +52,8 @@ export class MapComponent implements OnInit {
 
   constructor (
     private map: GoogleMapsAPIWrapper,
-    private favoriteStationsService: FavoriteStationsService
+    // private favoriteStationsService: FavoriteStationsService,
+    private initialStationService: InitialStationService
   ) {}
 
   ngOnInit () {
@@ -87,7 +89,7 @@ export class MapComponent implements OnInit {
           this.currentLat,
           this.currentLong
         );
-        this.favoriteStationsService.setInitialStation(this.initialStation);
+        this.initialStationService.setInitialStation(this.initialStation);
       }, 700);
     }, 300);
   }
