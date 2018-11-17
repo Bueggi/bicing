@@ -3,14 +3,14 @@ import { Station } from '../../station';
 import { FavoriteStationsService } from '../../services/favorite-stations.service';
 import { GMapsServiceService } from 'src/app/services/g-maps-service.service';
 import { environment } from '../../../environments/environment.prod';
-import { google } from '@agm/core/services/google-maps-types';
+import MarkerClusterer from '@google/markerclusterer';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
   })
-export class MapComponent implements AfterViewInit, OnChanges {
+export class MapComponent implements AfterViewInit, OnChanges, OnInit {
   // map initial properties: center & zoom
   currentLat = 41.3851;
   currentLong = 2.1734;
@@ -20,7 +20,8 @@ export class MapComponent implements AfterViewInit, OnChanges {
   openInfoWindow = false;
   opacity = 0.9;
   mapsAPiUrl = `https://maps.googleapis.com/maps/api/js?key=${environment.GMAPS_API_KEY}`;
-  map;
+  map = null;
+  marker = [];
 
   // using agm-directions https://robby570.tw/Agm-Direction-Docs/index.html
   // when origin & destination are ser the map display the route
@@ -80,12 +81,17 @@ export class MapComponent implements AfterViewInit, OnChanges {
           streetViewControl: false,
           scaleControl: true
         });
+        this.map.addListener('bounds_changed', () => {
+          console.log('bounds changed');
+          this.addStationsToMap();
+        });
       });
   }
 
   ngOnChanges() {
     this.getUserLocation();
     this.addStationsToMap();
+    this.addMarkerClustererToMap();
   }
 
   clickedMarker (station) {
@@ -94,28 +100,35 @@ export class MapComponent implements AfterViewInit, OnChanges {
 
   addStationsToMap () {
     if (this.stations && this.map) {
-      this.stations.filter(station => {
+      console.log(this.map)
+      this.stations.forEach(station => {
         if (this.map.getBounds().j.contains(station.longitude)
         && this.map.getBounds().l.contains(station.latitude)) {
           const maps = window['google']['maps'];
-          const marker = new maps.Marker({
+          this.marker.push(new maps.Marker({
             position: {
               lat: station.latitude, lng: station.longitude},
               map: this.map,
-              label: station.slots.toString()
-            });
+              label: station.slots.toString(),
+              onClick: this.clickedMarker
+            }));
         }
       });
+    }
+  }
+
+  addMarkerClustererToMap () {
+    if (window['google']) {
+      const clusterer = new MarkerClusterer(
+        this.map,
+        this.marker,
+        {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
     }
   }
 
 
   // get user current location to center map
   getUserLocation () {
-    if (this.map) {
-      this.stations.map(station => console.log(station));
-      console.log(this.map.getBounds());
-    }
     // delay with the objective of UX -> first position is city center & thi pans to location
     setTimeout(() => {
       if (navigator.geolocation) {
