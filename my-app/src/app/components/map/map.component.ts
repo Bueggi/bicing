@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output, OnInit, ViewChild, AfterViewInit, ElementRef, OnChanges } from '@angular/core';
+import { Component, Input, EventEmitter, Output, ViewChild, AfterViewInit, ElementRef, OnChanges } from '@angular/core';
 import { Station } from '../../station';
 import { FavoriteStationsService } from '../../services/favorite-stations.service';
 import { GMapsServiceService } from 'src/app/services/g-maps-service.service';
@@ -10,7 +10,7 @@ import MarkerClusterer from '@google/markerclusterer';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
   })
-export class MapComponent implements AfterViewInit, OnChanges, OnInit {
+export class MapComponent implements AfterViewInit, OnChanges {
   // map initial properties: center & zoom
   currentLat = 41.3851;
   currentLong = 2.1734;
