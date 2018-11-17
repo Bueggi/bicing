@@ -1,22 +1,25 @@
-import { Component, Input, EventEmitter, Output, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnInit, ViewChild, AfterViewInit, ElementRef, OnChanges } from '@angular/core';
 import { Station } from '../../station';
-import { GoogleMapsAPIWrapper, LatLngLiteral, AgmMap, LatLngBoundsLiteral, LatLngBounds } from '@agm/core';
 import { FavoriteStationsService } from '../../services/favorite-stations.service';
+import { GMapsServiceService } from 'src/app/services/g-maps-service.service';
+import { environment } from '../../../environments/environment.prod';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
   })
-export class MapComponent implements OnInit, AfterViewInit {
+export class MapComponent implements AfterViewInit, OnChanges {
   // map initial properties: center & zoom
-  currentLat: number = 41.3851;
-  currentLong: number = 2.1734;
-  currentLocationMarker: string = '../../assets/blue_marker.png';
-  zoom: number = 14.5;
-  streetViewControl: boolean = false;
-  openInfoWindow: boolean = false;
-  opacity: number = 0.9;
+  currentLat = 41.3851;
+  currentLong = 2.1734;
+  currentLocationMarker = '../../assets/blue_marker.png';
+  zoom = 11;
+  streetViewControl = false;
+  openInfoWindow = false;
+  opacity = 0.9;
+  mapsAPiUrl = `https://maps.googleapis.com/maps/api/js?key=${environment.GMAPS_API_KEY}`;
+  map;
 
   // using agm-directions https://robby570.tw/Agm-Direction-Docs/index.html
   // when origin & destination are ser the map display the route
@@ -25,10 +28,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   // destination: set when clicking go to destination
   @Input()
   destination: object;
-  travelMode: string = 'BICYCLING';
-
-  @ViewChild('AgmMap') agmMap: AgmMap;
-
+  travelMode = 'BICYCLING';
 
 
   // nearest station to current location -> send to dashboard via service
@@ -53,33 +53,49 @@ export class MapComponent implements OnInit, AfterViewInit {
   @Output()
   clickedStation = new EventEmitter<Station>();
 
+  @ViewChild('mapElement') mapElm: ElementRef;
+
   constructor (
-    public map: GoogleMapsAPIWrapper,
+    private load: GMapsServiceService,
+    // public map: GoogleMapsAPIWrapper,
     private favoriteStationsService: FavoriteStationsService
   ) {}
 
-  ngOnInit () {
-    this.getUserLocation();
-
+  ngAfterViewInit () {
+    this.load.loadScript(this.mapsAPiUrl, 'gmap', () => {
+      const maps = window['google']['maps'];
+      this.map = new maps.Map(
+        this.mapElm.nativeElement,
+        {
+          zoom: this.zoom,
+          center: {
+            lat: this.currentLat,
+            lng: this.currentLong
+          },
+          zoomControl: true,
+          mapTypeControl: false,
+          panControl: false,
+          scrollWheel: true,
+          streetViewControl: false,
+          scaleControl: true
+        });
+      });
   }
 
-  ngAfterViewInit() {
-    console.log('///////////////////////// ASDF');
-    this.map.getBounds().then(data => console.log('///////////////////', data), err => console.log(err));
+  ngOnChanges() {
+    this.getUserLocation();
   }
 
   clickedMarker (station) {
     this.clickedStation.emit(station);
   }
 
+
   // get user current location to center map
   getUserLocation () {
-    console.log('got here');
-    console.log(this.map);
-
-    this.map.getBounds().then(data => console.log('DATA', data), err => console.log(err));
-    // console.log('getBounds', this.map.getBounds().then(data => console.log('DATA', data)));
-
+    if(this.map) {
+      console.log(this.map.getBounds());
+    }
     // delay with the objective of UX -> first position is city center & thi pans to location
     setTimeout(() => {
       if (navigator.geolocation) {
@@ -98,8 +114,6 @@ export class MapComponent implements OnInit, AfterViewInit {
         lng: this.currentLong
       });
 
-
-
       // finds nearest station to current location (would be nice to do it without setTimeout :))
       setTimeout(() => {
         this.initialStation = this.find_closest_marker(
@@ -115,26 +129,26 @@ export class MapComponent implements OnInit, AfterViewInit {
     return (x * Math.PI) / 180;
   }
   find_closest_marker (currentLat, currentLong) {
-    var lat = currentLat;
-    var lng = currentLong;
-    var R = 6371; // radius of earth in km
-    var distances = [];
-    var closest = -1;
+    const lat = currentLat;
+    const lng = currentLong;
+    const R = 6371; // radius of earth in km
+    const distances = [];
+    let closest = -1;
     for (let i = 0; i < this.stations.length; i++) {
-      var mlat = this.stations[i].latitude;
-      var mlng = this.stations[i].longitude;
-      var dLat = this.rad(mlat - lat);
-      var dLong = this.rad(mlng - lng);
-      var a =
+      const mlat = this.stations[i].latitude;
+      const mlng = this.stations[i].longitude;
+      const dLat = this.rad(mlat - lat);
+      const dLong = this.rad(mlng - lng);
+      const a =
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
         Math.cos(this.rad(lat)) *
           Math.cos(this.rad(lat)) *
           Math.sin(dLong / 2) *
           Math.sin(dLong / 2);
-      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      var d = R * c;
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      const d = R * c;
       distances[i] = d;
-      if (closest == -1 || d < distances[closest]) {
+      if (closest === -1 || d < distances[closest]) {
         closest = i;
       }
     }

@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { MatComponentsModule } from './mat-components.module';
 import { AppComponent } from './app.component';
+import { GMapsServiceService } from './services/g-maps-service.service';
 
 import { MapComponent } from './components/map/map.component';
 import { FavoriteStationsComponent } from './components//favorite-stations/favorite-stations.component';
@@ -53,7 +54,7 @@ import { NavbarComponent } from './view-components/navbar/navbar.component';
     })
   ],
   entryComponents: [NoSlotsDialogComponent, LessThanMinComponent],
-  providers: [GoogleMapsAPIWrapper, AppComponent],
+  providers: [GoogleMapsAPIWrapper, AppComponent, GMapsServiceService],
   bootstrap: [AppComponent]
   })
 export class AppModule {}
