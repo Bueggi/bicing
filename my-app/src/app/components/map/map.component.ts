@@ -98,7 +98,12 @@ export class MapComponent implements AfterViewInit, OnChanges {
         if (this.map.getBounds().j.contains(station.longitude)
         && this.map.getBounds().l.contains(station.latitude)) {
           const maps = window['google']['maps'];
-          const marker = new maps.Marker({position: {lat: station.latitude, lng: station.longitude}, map: this.map});
+          const marker = new maps.Marker({
+            position: {
+              lat: station.latitude, lng: station.longitude},
+              map: this.map,
+              label: station.slots.toString()
+            });
         }
       });
     }
