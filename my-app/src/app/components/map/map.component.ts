@@ -22,7 +22,7 @@ import MarkerClusterer from '@google/markerclusterer';
 export class MapComponent implements AfterViewInit, OnChanges {
   currentLat = 41.3851;
   currentLong = 2.1734;
-  currentLocationMarker = '../../assets/blue_marker.png';
+  currentLocationMarker = '../../assets/bike-color.png';
   zoom = 14.5;
   streetViewControl = false;
   openInfoWindow = false;
@@ -32,6 +32,7 @@ export class MapComponent implements AfterViewInit, OnChanges {
   }`;
   map = null;
   marker = [];
+  currentMarker;
 
   // using agm-directions https://robby570.tw/Agm-Direction-Docs/index.html
   // when origin & destination are ser the map display the route
@@ -88,6 +89,7 @@ export class MapComponent implements AfterViewInit, OnChanges {
       });
       this.map.addListener('bounds_changed', () => {
         console.log('bounds changed');
+        this.addCurrentMarkerToMap();
         this.addStationsToMap();
       });
     });
@@ -95,6 +97,18 @@ export class MapComponent implements AfterViewInit, OnChanges {
 
   clickedMarker (station) {
     this.clickedStation.emit(station);
+  }
+
+  addCurrentMarkerToMap () {
+    const maps = window['google']['maps'];
+    this.currentMarker = new maps.Marker({
+      position: {
+        lat: this.currentLat,
+        lng: this.currentLong
+      },
+      map: this.map,
+      icon: this.currentLocationMarker
+    });
   }
 
   addStationsToMap () {
