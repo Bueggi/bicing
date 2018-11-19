@@ -52,20 +52,6 @@ export class DashboardComponent implements OnInit {
   // element: either 'bikes' or 'slots'
   element: string;
 
-  mock: Station = {
-    id: 1,
-    type: 'BIKE',
-    latitude: 41.397952,
-    longitude: 2.180042,
-    streetName: 'Gran Via Corts Catalanes',
-    streetNumber: '760',
-    altitude: '21',
-    slots: 6,
-    bikes: 23,
-    nearbyStations: '24, 369, 387, 426',
-    status: 'OPN'
-  };
-
   constructor (
     private apiClientService: ApiClientService,
     private dialog: MatDialog,
@@ -80,6 +66,7 @@ export class DashboardComponent implements OnInit {
 
   // on init get all station from Bicing api via my koa server
   addStations () {
+    console.log('got updated');
     this.loadingStations = true;
     this.apiClientService.getStations().subscribe(response => {
       this.stations = response.stations.map(station => {
@@ -107,7 +94,7 @@ export class DashboardComponent implements OnInit {
     this.minimumSlots = min;
   }
 
-  clickedMarker (clickedStation) {
+  clickedMarker (clickedStation): void {
     this.apiClientService.getStations().subscribe(response => {
       const requestedStation = response.stations.find(
         el => el.id === clickedStation.id.toString()
@@ -155,8 +142,9 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  //checkSlots creates an interval to check real time changes in slots
+  // checkSlots creates an interval to check real time changes in slots
   checkSlots () {
+    console.log('updated check slots');
     this.clearCheckInterval();
 
     this.interval = setInterval(() => {

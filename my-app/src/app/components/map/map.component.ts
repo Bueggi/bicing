@@ -3,27 +3,35 @@ import {
   Input,
   EventEmitter,
   Output,
-  OnInit,
-  OnChanges
+  OnChanges,
+  ViewChild,
+  AfterViewInit,
+  ElementRef
 } from '@angular/core';
 import { Station } from '../../station';
-import { GoogleMapsAPIWrapper } from '@agm/core';
 import { InitialStationService } from 'src/app/services/initial-station.service';
+import { GMapsServiceService } from 'src/app/services/g-maps-service.service';
+import { environment } from '../../../environments/environment.prod';
+import MarkerClusterer from '@google/markerclusterer';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
   })
-export class MapComponent implements OnInit, OnChanges {
-  // map initial properties: center & zoom
-  currentLat: number = 41.3851;
-  currentLong: number = 2.1734;
-  currentLocationMarker: string = '../../assets/blue_marker.png';
-  zoom: number = 14.5;
-  streetViewControl: boolean = false;
-  openInfoWindow: boolean = false;
-  opacity: number = 0.9;
+export class MapComponent implements AfterViewInit, OnChanges {
+  currentLat = 41.3851;
+  currentLong = 2.1734;
+  currentLocationMarker = '../../assets/blue_marker.png';
+  zoom = 14.5;
+  streetViewControl = false;
+  openInfoWindow = false;
+  opacity = 0.9;
+  mapsAPiUrl = `https://maps.googleapis.com/maps/api/js?key=${
+    environment.GMAPS_API_KEY
+  }`;
+  map = null;
+  marker = [];
 
   // using agm-directions https://robby570.tw/Agm-Direction-Docs/index.html
   // when origin & destination are ser the map display the route
@@ -32,7 +40,7 @@ export class MapComponent implements OnInit, OnChanges {
   // destination: set when clicking go to destination
   @Input()
   destination: object;
-  travelMode: string = 'BICYCLING';
+  travelMode = 'BICYCLING';
 
   // nearest station to current location -> send to dashboard via service
   initialStation: Station;
@@ -41,36 +49,85 @@ export class MapComponent implements OnInit, OnChanges {
     suppressMarkers: true
   };
 
-  // to convert markers to a bike image (not using it)
-  image: object = {
-    url: '../../assets/2019_TImberjack_NX_Eagle_27.5_Org-uc-1_.jpg',
-    scaledSize: {
-      width: 20,
-      height: 20
-    }
-  };
-
   @Input()
   stations: Station[];
 
   @Output()
   clickedStation = new EventEmitter<Station>();
 
+  @ViewChild('mapElement')
+  mapElm: ElementRef;
+
   constructor (
-    private map: GoogleMapsAPIWrapper,
+    // <<<<<<< HEAD
+    private load: GMapsServiceService,
     private initialStationService: InitialStationService
   ) {}
 
-  ngOnInit () {
-    console.log('init!!!');
-  }
-
   ngOnChanges () {
     this.getUserLocation().then(() => this.getClosestStation());
+    this.addStationsToMap();
+    this.addMarkerClustererToMap();
+  }
+
+  ngAfterViewInit () {
+    this.load.loadScript(this.mapsAPiUrl, 'gmap', () => {
+      const maps = window['google']['maps'];
+      this.map = new maps.Map(this.mapElm.nativeElement, {
+        zoom: this.zoom,
+        center: {
+          lat: this.currentLat,
+          lng: this.currentLong
+        },
+        zoomControl: true,
+        mapTypeControl: false,
+        panControl: false,
+        scrollWheel: true,
+        streetViewControl: false,
+        scaleControl: true
+      });
+      this.map.addListener('bounds_changed', () => {
+        console.log('bounds changed');
+        this.addStationsToMap();
+      });
+    });
   }
 
   clickedMarker (station) {
     this.clickedStation.emit(station);
+  }
+
+  addStationsToMap () {
+    if (this.stations && this.map) {
+      this.marker = [];
+      this.stations.forEach(station => {
+        if (
+          this.map.getBounds().j.contains(station.longitude) &&
+          this.map.getBounds().l.contains(station.latitude)
+        ) {
+          const maps = window['google']['maps'];
+          const newMarker = new maps.Marker({
+            position: {
+              lat: station.latitude,
+              lng: station.longitude
+            },
+            map: this.map,
+            label: station.slots.toString()
+          });
+          newMarker.addListener('click', () => this.clickedMarker(station));
+          this.marker.push(newMarker);
+        }
+      });
+    }
+  }
+
+  addMarkerClustererToMap () {
+    if (window['google']) {
+      const clusterer = new MarkerClusterer(this.map, this.marker, {
+        imagePath:
+          'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+      });
+    }
   }
 
   // get user current location to center map
@@ -84,11 +141,12 @@ export class MapComponent implements OnInit, OnChanges {
         lng: this.currentLong
       };
     });
-
-    this.map.panTo({
-      lat: this.currentLat,
-      lng: this.currentLong
-    });
+    if (this.map) {
+      this.map.panTo({
+        lat: this.currentLat,
+        lng: this.currentLong
+      });
+    }
   }
 
   getClosestStation () {
@@ -102,30 +160,33 @@ export class MapComponent implements OnInit, OnChanges {
   rad (x) {
     return (x * Math.PI) / 180;
   }
+
   findClosestMarker (currentLat, currentLong) {
     var lat = currentLat;
     var lng = currentLong;
     var R = 6371; // radius of earth in km
     var distances = [];
     var closest = -1;
-    for (let i = 0; i < this.stations.length; i++) {
-      var mlat = this.stations[i].latitude;
-      var mlng = this.stations[i].longitude;
-      var dLat = this.rad(mlat - lat);
-      var dLong = this.rad(mlng - lng);
-      var a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(this.rad(lat)) *
+    if (this.stations) {
+      for (let i = 0; i < this.stations.length; i++) {
+        const mlat = this.stations[i].latitude;
+        const mlng = this.stations[i].longitude;
+        const dLat = this.rad(mlat - lat);
+        const dLong = this.rad(mlng - lng);
+        const a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
           Math.cos(this.rad(lat)) *
-          Math.sin(dLong / 2) *
-          Math.sin(dLong / 2);
-      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      var d = R * c;
-      distances[i] = d;
-      if (closest == -1 || d < distances[closest]) {
-        closest = i;
+            Math.cos(this.rad(lat)) *
+            Math.sin(dLong / 2) *
+            Math.sin(dLong / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const d = R * c;
+        distances[i] = d;
+        if (closest === -1 || d < distances[closest]) {
+          closest = i;
+        }
       }
+      return this.stations[closest];
     }
-    return this.stations[closest];
   }
 }
