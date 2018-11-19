@@ -1,14 +1,37 @@
-<nav mat-tab-nav-bar id="navbar">
-  <button routerLink="/" mat-button matTooltip="Info about the action">
-    <mat-icon>near_me</mat-icon>
-    Map
-  </button>
-  <button routerLink="/nearest-stations" mat-button id="nearby-stations-icon">
-    <mat-icon>train</mat-icon>
-    Nearby
-  </button>
-  <button routerLink="/favorite" mat-button color="primary">
-    <mat-icon>favorite_border</mat-icon>
-    Favorites
-  </button>
+<!--
+  <nav mat-tab-nav-bar mat-align-tabs="center" id="navbar">
+    <a mat-tab-link [routerLink]="/" matTooltip="Info about the action">
+      <ng-template mat-tab-label>
+        <mat-icon>near_me</mat-icon>
+        Map
+      </ng-template>
+    </a>
+    <a mat-tab-link [routerLink]="/nearest-stations" id="nearby-stations-icon">
+      <ng-template mat-tab-label>
+        <mat-icon>train</mat-icon>
+        Nearby
+      </ng-template>
+    </a>
+    <a mat-tab-link [routerLink]="/favorite">
+      <ng-template mat-tab-label>
+        <mat-icon>favorite_border</mat-icon>
+        Favorites
+      </ng-template>
+    </a>
+  </nav>
+-->
+
+<nav mat-tab-nav-bar mat-align-tabs="center" id="navbar">
+  <a
+    mat-tab-link
+    *ngFor="let link of navLinks"
+    [routerLink]="['/' + link.path]"
+    routerLinkActive
+    #rla="routerLinkActive"
+    [active]="rla.isActive"
+  >
+    {{ link.label }}
+  </a>
 </nav>
+
+<router-outlet></router-outlet>
