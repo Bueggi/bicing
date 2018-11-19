@@ -13,7 +13,7 @@ export class FavoriteStationsService {
   nearestStations: Station[] = [];
 
   // initialStation -> should be another service
-  initialStation: Station;
+  // initialStation: Station;
 
   // add favorite
   add (station: Station) {
@@ -63,11 +63,11 @@ export class FavoriteStationsService {
     });
   }
 
-  setInitialStation (station) {
-    this.initialStation = station;
-  }
+  // setInitialStation (station) {
+  //   this.initialStation = station;
+  // }
 
-  getInitialStation () {
-    return this.initialStation;
-  }
+  // getInitialStation () {
+  //   return this.initialStation;
+  // }
 }
