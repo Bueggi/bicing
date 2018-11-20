@@ -1,26 +1,3 @@
-<!--
-  <nav mat-tab-nav-bar mat-align-tabs="center" id="navbar">
-    <a mat-tab-link [routerLink]="/" matTooltip="Info about the action">
-      <ng-template mat-tab-label>
-        <mat-icon>near_me</mat-icon>
-        Map
-      </ng-template>
-    </a>
-    <a mat-tab-link [routerLink]="/nearest-stations" id="nearby-stations-icon">
-      <ng-template mat-tab-label>
-        <mat-icon>train</mat-icon>
-        Nearby
-      </ng-template>
-    </a>
-    <a mat-tab-link [routerLink]="/favorite">
-      <ng-template mat-tab-label>
-        <mat-icon>favorite_border</mat-icon>
-        Favorites
-      </ng-template>
-    </a>
-  </nav>
--->
-
 <nav mat-tab-nav-bar mat-align-tabs="center" id="navbar">
   <a
     mat-tab-link
@@ -30,6 +7,7 @@
     #rla="routerLinkActive"
     [active]="rla.isActive"
   >
+    <mat-icon>{{ link.icon }}</mat-icon>
     {{ link.label }}
   </a>
 </nav>
