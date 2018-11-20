@@ -14,6 +14,7 @@ import { InitialStationService } from 'src/app/services/initial-station.service'
 import { GMapsServiceService } from 'src/app/services/g-maps-service.service';
 import { environment } from '../../../environments/environment.prod';
 import MarkerClusterer from '@google/markerclusterer';
+import { start } from 'repl';
 
 @Component({
   selector: 'app-map',
@@ -24,7 +25,7 @@ export class MapComponent implements AfterViewInit, OnInit, OnChanges {
   currentLat = 41.3851;
   currentLong = 2.1734;
   currentLocationMarker = '../../assets/bike-color.png';
-  zoom = 14.5;
+  zoom = 15;
   streetViewControl = false;
   openInfoWindow = false;
   opacity = 0.9;
@@ -34,6 +35,8 @@ export class MapComponent implements AfterViewInit, OnInit, OnChanges {
   map = null;
   marker = [];
   currentMarker;
+  directionsService;
+  directionsDisplay;
 
   // using agm-directions https://robby570.tw/Agm-Direction-Docs/index.html
   // when origin & destination are ser the map display the route
@@ -72,7 +75,6 @@ export class MapComponent implements AfterViewInit, OnInit, OnChanges {
   ngOnChanges () {
     console.log('on change!');
     this.getUserLocation().then(() => this.getClosestStation());
-    this.addMarkerClustererToMap();
   }
 
   ngAfterViewInit () {
@@ -84,10 +86,26 @@ export class MapComponent implements AfterViewInit, OnInit, OnChanges {
     this.clickedStation.emit(station);
   }
 
+  calculateRoute () {
+    const { destination, travelMode } = this;
+    const request = {
+      origin,
+      destination,
+      travelMode
+    };
+    this.directionsService.route(request, (result, status) => {
+      if (status == 'OK') {
+        this.directionsDisplay.setDirections(result);
+      }
+    });
+  }
+
   setMapAndListeners () {
     this.load.loadScript(this.mapsAPiUrl, 'gmap', () => {
       console.log('trying to run after view init!!!');
       const maps = window['google']['maps'];
+      this.directionsService = new maps.DirectionsService();
+      this.directionsDisplay = new maps.DirectionsRenderer();
       this.map = new maps.Map(this.mapElm.nativeElement, {
         zoom: this.zoom,
         center: {
@@ -101,8 +119,9 @@ export class MapComponent implements AfterViewInit, OnInit, OnChanges {
         streetViewControl: false,
         scaleControl: true
       });
+      this.directionsDisplay.setMap(this.map);
       this.map.addListener('bounds_changed', () => {
-        // console.log('bounds changed');
+        console.log('bounds changed');
         this.addCurrentMarkerToMap();
         this.addStationsToMap();
         this.addMarkerClustererToMap();
@@ -137,7 +156,7 @@ export class MapComponent implements AfterViewInit, OnInit, OnChanges {
               lng: station.longitude
             },
             map: this.map,
-            label: station.slots.toString()
+            label: station.id.toString()
           });
           newMarker.addListener('click', () => this.clickedMarker(station));
           this.marker.push(newMarker);
@@ -165,6 +184,7 @@ export class MapComponent implements AfterViewInit, OnInit, OnChanges {
         lat: this.currentLat,
         lng: this.currentLong
       };
+      console.log('origin here!', this.origin);
     });
     if (this.map) {
       this.map.panTo({

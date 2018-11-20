@@ -138,6 +138,7 @@ export class DashboardComponent implements OnInit {
       };
 
       this.destination = newDestination;
+      console.log('destination obj', this.destination);
     }
   }
 
