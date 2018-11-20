@@ -69,16 +69,17 @@ export class MapComponent implements AfterViewInit, OnInit, OnChanges {
   ) {}
 
   ngOnInit () {
-    console.log('INIT!');
+    // console.log('INIT!');
   }
 
   ngOnChanges () {
-    console.log('on change!');
+    // console.log('on change!');
     this.getUserLocation().then(() => this.getClosestStation());
+    this.calculateRoute();
   }
 
   ngAfterViewInit () {
-    console.log('after view init');
+    // console.log('after view init');
     this.setMapAndListeners();
   }
 
@@ -87,22 +88,23 @@ export class MapComponent implements AfterViewInit, OnInit, OnChanges {
   }
 
   calculateRoute () {
-    const { destination, travelMode } = this;
-    const request = {
-      origin,
-      destination,
-      travelMode
-    };
-    this.directionsService.route(request, (result, status) => {
-      if (status == 'OK') {
-        this.directionsDisplay.setDirections(result);
-      }
-    });
+    if (this.destination) {
+      const { travelMode } = this;
+      const maps = window['google']['maps'];
+      const origin = new maps.LatLng(...Object.values(this.origin));
+      const destination = new maps.LatLng(...Object.values(this.destination));
+      const request = { origin, destination, travelMode };
+      this.directionsService.route(request, (result, status) => {
+        if (status == 'OK') {
+          this.directionsDisplay.setDirections(result);
+        }
+      });
+    }
   }
 
   setMapAndListeners () {
     this.load.loadScript(this.mapsAPiUrl, 'gmap', () => {
-      console.log('trying to run after view init!!!');
+      // console.log('trying to run after view init!!!');
       const maps = window['google']['maps'];
       this.directionsService = new maps.DirectionsService();
       this.directionsDisplay = new maps.DirectionsRenderer();
@@ -121,7 +123,7 @@ export class MapComponent implements AfterViewInit, OnInit, OnChanges {
       });
       this.directionsDisplay.setMap(this.map);
       this.map.addListener('bounds_changed', () => {
-        console.log('bounds changed');
+        // console.log('bounds changed');
         this.addCurrentMarkerToMap();
         this.addStationsToMap();
         this.addMarkerClustererToMap();
@@ -184,7 +186,7 @@ export class MapComponent implements AfterViewInit, OnInit, OnChanges {
         lat: this.currentLat,
         lng: this.currentLong
       };
-      console.log('origin here!', this.origin);
+      // console.log('origin here!', this.origin);
     });
     if (this.map) {
       this.map.panTo({

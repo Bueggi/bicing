@@ -8,7 +8,6 @@ export class GMapsServiceService {
 
   loadScript (url, id, callback): void {
     if (!document.getElementById(id)) {
-      console.log('loading script wowww');
       const script = document.createElement('script');
       script.type = 'text/javascript';
       script.src = url;
