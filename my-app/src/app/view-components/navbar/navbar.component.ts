@@ -11,7 +11,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit () {}
 
   navLinks = [
-    { path: '', label: 'Map', icon: 'near_me' },
+    { path: 'home', label: 'Map', icon: 'near_me' },
     { path: 'nearest-stations', label: 'Nearby', icon: 'train' },
     { path: 'favorite', label: 'Favorites', icon: 'favorite_border' }
   ];

@@ -3,6 +3,7 @@ import {
   Input,
   EventEmitter,
   Output,
+  OnInit,
   OnChanges,
   ViewChild,
   AfterViewInit,
@@ -19,7 +20,7 @@ import MarkerClusterer from '@google/markerclusterer';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
   })
-export class MapComponent implements AfterViewInit, OnChanges {
+export class MapComponent implements AfterViewInit, OnInit, OnChanges {
   currentLat = 41.3851;
   currentLong = 2.1734;
   currentLocationMarker = '../../assets/bike-color.png';
@@ -60,13 +61,15 @@ export class MapComponent implements AfterViewInit, OnChanges {
   mapElm: ElementRef;
 
   constructor (
-    // <<<<<<< HEAD
     private load: GMapsServiceService,
     private initialStationService: InitialStationService
   ) {}
 
-  ngOnChanges () {
+  ngOnInit () {
     this.getUserLocation().then(() => this.getClosestStation());
+  }
+
+  ngOnChanges () {
     this.addStationsToMap();
     this.addMarkerClustererToMap();
   }

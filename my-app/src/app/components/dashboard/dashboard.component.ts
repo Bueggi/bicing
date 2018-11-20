@@ -241,10 +241,3 @@ export class DashboardComponent implements OnInit {
     return requestedStation;
   }
 }
-
-// selectBikes () {
-//   this.element = 'bikes';
-// }
-// selectSlots () {
-//   this.element = 'slots';
-// }
