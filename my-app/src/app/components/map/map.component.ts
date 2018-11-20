@@ -107,7 +107,7 @@ export class MapComponent implements AfterViewInit, OnInit, OnChanges {
       // console.log('trying to run after view init!!!');
       const maps = window['google']['maps'];
       this.directionsService = new maps.DirectionsService();
-      this.directionsDisplay = new maps.DirectionsRenderer();
+      this.directionsDisplay = new maps.DirectionsRenderer(this.renderOptions);
       this.map = new maps.Map(this.mapElm.nativeElement, {
         zoom: this.zoom,
         center: {
