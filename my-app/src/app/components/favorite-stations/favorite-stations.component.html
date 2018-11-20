@@ -5,5 +5,8 @@
 </div>
 
 <div *ngIf="favoriteStationsService.favoriteStations.length === 0">
-  <p>You haven't added any stations yet!</p>
+  <mat-card>
+    <mat-icon>favorite_border</mat-icon>
+    <mat-card-subtitle>You haven't added any stations yet!</mat-card-subtitle>
+  </mat-card>
 </div>

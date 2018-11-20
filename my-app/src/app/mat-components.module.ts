@@ -9,6 +9,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   exports: [
@@ -21,7 +22,8 @@ import { MatTabsModule } from '@angular/material/tabs';
   MatChipsModule,
   MatProgressSpinnerModule,
   MatSelectModule,
-  MatTabsModule
+  MatTabsModule,
+  MatDividerModule
   ]
   })
 export class MatComponentsModule {}

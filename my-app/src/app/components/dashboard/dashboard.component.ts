@@ -66,7 +66,7 @@ export class DashboardComponent implements OnInit {
 
   // on init get all station from Bicing api via my koa server
   addStations () {
-    console.log('got updated');
+    // console.log('got updated');
     this.loadingStations = true;
     this.apiClientService.getStations().subscribe(response => {
       this.stations = response.stations.map(station => {

@@ -66,16 +66,27 @@ export class MapComponent implements AfterViewInit, OnInit, OnChanges {
   ) {}
 
   ngOnInit () {
-    this.getUserLocation().then(() => this.getClosestStation());
+    console.log('INIT!');
   }
 
   ngOnChanges () {
-    this.addStationsToMap();
+    console.log('on change!');
+    this.getUserLocation().then(() => this.getClosestStation());
     this.addMarkerClustererToMap();
   }
 
   ngAfterViewInit () {
+    console.log('after view init');
+    this.setMapAndListeners();
+  }
+
+  clickedMarker (station) {
+    this.clickedStation.emit(station);
+  }
+
+  setMapAndListeners () {
     this.load.loadScript(this.mapsAPiUrl, 'gmap', () => {
+      console.log('trying to run after view init!!!');
       const maps = window['google']['maps'];
       this.map = new maps.Map(this.mapElm.nativeElement, {
         zoom: this.zoom,
@@ -91,15 +102,12 @@ export class MapComponent implements AfterViewInit, OnInit, OnChanges {
         scaleControl: true
       });
       this.map.addListener('bounds_changed', () => {
-        console.log('bounds changed');
+        // console.log('bounds changed');
         this.addCurrentMarkerToMap();
         this.addStationsToMap();
+        this.addMarkerClustererToMap();
       });
     });
-  }
-
-  clickedMarker (station) {
-    this.clickedStation.emit(station);
   }
 
   addCurrentMarkerToMap () {

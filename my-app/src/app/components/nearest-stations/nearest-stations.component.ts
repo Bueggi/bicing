@@ -30,15 +30,12 @@ export class NearestStationsComponent implements OnInit, OnDestroy {
             'slots'
           );
         });
-        console.log('res', response.stations);
         this.favoriteStationsService.updateNearestStations(response.stations);
-        const lala = this.favoriteStationsService.nearestStations;
-        console.log('lala', lala);
       });
   }
 
   ngOnDestroy () {
-    console.log('subscription', this.subscription);
+    // console.log('subscription', this.subscription);
     this.subscription.unsubscribe();
   }
 

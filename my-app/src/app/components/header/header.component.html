@@ -1,24 +1,28 @@
-<div id="header">
+<div *ngIf="loadingStations">
   <mat-card>
-    <div id="logo-spinner">
-      <mat-progress-spinner
-        *ngIf="loadingStations"
-        [color]="progressSpinner.color"
-        [mode]="progressSpinner.mode"
-        [diameter]="progressSpinner.diameter"
-        [strokeWidth]="progressSpinner.strokeWidth"
-      >
-      </mat-progress-spinner>
-      <mat-icon>directions_bike</mat-icon>
-    </div>
-    <div>Select destination</div>
+    <mat-progress-spinner
+      id="logo-spinner"
+      [color]="progressSpinner.color"
+      [mode]="progressSpinner.mode"
+      [diameter]="progressSpinner.diameter"
+      [strokeWidth]="progressSpinner.strokeWidth"
+    >
+    </mat-progress-spinner>
+  </mat-card>
+</div>
+
+<div id="header" *ngIf="!loadingStations">
+  <mat-card>
+    <br />
+    <mat-icon>directions_bike</mat-icon>
+    <p><mat-card-title> Select Your Destination </mat-card-title></p>
 
     <div id="header-form">
       <mat-form-field>
         <mat-select
           (selectionChange)="selectMinSlots($event)"
           [(value)]="selected"
-          placeholder="minimum slots"
+          placeholder="minimum slots available"
         >
           <mat-option value="1">1</mat-option>
           <mat-option value="2">2</mat-option>
@@ -27,11 +31,6 @@
         </mat-select>
       </mat-form-field>
       <button mat-stroked-button color="warn" (click)="ride()">Route</button>
-      <!--
-        <mat-chip-list>
-          <mat-chip (click)="ride()" color="warn" selected>Ride</mat-chip>
-        </mat-chip-list>
-      -->
     </div>
   </mat-card>
 </div>
