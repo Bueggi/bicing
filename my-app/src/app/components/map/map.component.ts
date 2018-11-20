@@ -73,13 +73,11 @@ export class MapComponent implements AfterViewInit, OnInit, OnChanges {
   }
 
   ngOnChanges () {
-    // console.log('on change!');
     this.getUserLocation().then(() => this.getClosestStation());
     this.calculateRoute();
   }
 
   ngAfterViewInit () {
-    // console.log('after view init');
     this.setMapAndListeners();
   }
 
@@ -104,7 +102,6 @@ export class MapComponent implements AfterViewInit, OnInit, OnChanges {
 
   setMapAndListeners () {
     this.load.loadScript(this.mapsAPiUrl, 'gmap', () => {
-      // console.log('trying to run after view init!!!');
       const maps = window['google']['maps'];
       this.directionsService = new maps.DirectionsService();
       this.directionsDisplay = new maps.DirectionsRenderer(this.renderOptions);
@@ -186,7 +183,6 @@ export class MapComponent implements AfterViewInit, OnInit, OnChanges {
         lat: this.currentLat,
         lng: this.currentLong
       };
-      // console.log('origin here!', this.origin);
     });
     if (this.map) {
       this.map.panTo({
