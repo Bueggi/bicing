@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiClientService } from '../api-client.service';
-import { Station } from '../station';
+import { ApiClientService } from '../../services/api-client.service';
+import { Station } from '../../station';
 import { MatDialog } from '@angular/material/dialog';
-import { NoSlotsDialogComponent } from '../no-slots-dialog/no-slots-dialog.component';
-import { LessThanMinComponent } from '../less-than-min/less-than-min.component';
-import { FaovoritStationsService } from '../faovorit-stations.service';
+import { NoSlotsDialogComponent } from '../../view-components/no-slots-dialog/no-slots-dialog.component';
+import { LessThanMinComponent } from '../../view-components/less-than-min/less-than-min.component';
+import { FavoriteStationsService } from '../../services/favorite-stations.service';
+import { InitialStationService } from 'src/app/services/initial-station.service';
 
 declare interface Coordinates {
   lat: number;
@@ -22,7 +23,7 @@ export class DashboardComponent implements OnInit {
   loadingStations: boolean = false;
 
   // minimun slots set by user to determine when it is going to be notified
-  minimunSlots: number;
+  minimumSlots: number;
 
   // realtime stations status:
   updatedStations: Station[];
@@ -51,33 +52,21 @@ export class DashboardComponent implements OnInit {
   // element: either 'bikes' or 'slots'
   element: string;
 
-  mock: Station = {
-    id: 1,
-    type: 'BIKE',
-    latitude: 41.397952,
-    longitude: 2.180042,
-    streetName: 'Gran Via Corts Catalanes',
-    streetNumber: '760',
-    altitude: '21',
-    slots: 6,
-    bikes: 23,
-    nearbyStations: '24, 369, 387, 426',
-    status: 'OPN'
-  };
-
   constructor (
     private apiClientService: ApiClientService,
     private dialog: MatDialog,
-    private favoriteStationsService: FaovoritStationsService
+    private favoriteStationsService: FavoriteStationsService,
+    private initialStationService: InitialStationService
   ) {}
 
   ngOnInit () {
     this.addStations();
-    this.getIinitialStation();
+    this.getInitialStation();
   }
 
   // on init get all station from Bicing api via my koa server
   addStations () {
+    // console.log('got updated');
     this.loadingStations = true;
     this.apiClientService.getStations().subscribe(response => {
       this.stations = response.stations.map(station => {
@@ -94,18 +83,17 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // would be better to use observables to achieve this
-  getIinitialStation () {
-    setTimeout(() => {
-      this.initialStation = this.favoriteStationsService.getInitialStation();
-    }, 1300);
+  getInitialStation () {
+    this.initialStationService.currentStation.subscribe(
+      station => (this.initialStation = station)
+    );
   }
 
   setMinimumSlots (min) {
-    this.minimunSlots = min;
+    this.minimumSlots = min;
   }
 
-  clickedMarker (clickedStation) {
+  clickedMarker (clickedStation): void {
     this.apiClientService.getStations().subscribe(response => {
       const requestedStation = response.stations.find(
         el => el.id === clickedStation.id.toString()
@@ -150,11 +138,13 @@ export class DashboardComponent implements OnInit {
       };
 
       this.destination = newDestination;
+      console.log('destination obj', this.destination);
     }
   }
 
-  //checkSlots creates an interval to check real time changes in slots
+  // checkSlots creates an interval to check real time changes in slots
   checkSlots () {
+    console.log('updated check slots');
     this.clearCheckInterval();
 
     this.interval = setInterval(() => {
@@ -203,11 +193,12 @@ export class DashboardComponent implements OnInit {
   }
 
   checkNoSlots (station) {
+    // can probably refactor this to implcitly return true or false
     this.noSlots = station.slots === 0 ? true : false;
   }
 
   checkLessThanMinimum () {
-    if (this.selectedStation.slots < this.minimunSlots && !this.noSlots) {
+    if (this.selectedStation.slots < this.minimumSlots && !this.noSlots) {
       this.clearCheckInterval();
       this.dialog
         .open(LessThanMinComponent, {
@@ -217,7 +208,7 @@ export class DashboardComponent implements OnInit {
         })
         .afterClosed()
         .subscribe(() => {
-          this.minimunSlots = this.selectedStation.slots - 1;
+          this.minimumSlots = this.selectedStation.slots - 1;
           this.checkSlots();
         });
     }
@@ -251,10 +242,3 @@ export class DashboardComponent implements OnInit {
     return requestedStation;
   }
 }
-
-// selectBikes () {
-//   this.element = 'bikes';
-// }
-// selectSlots () {
-//   this.element = 'slots';
-// }

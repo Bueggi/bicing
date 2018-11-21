@@ -1,6 +1,0 @@
-<app-navbar></app-navbar>
-<div *ngIf="favoriteStationsService.nearestStations.length">
-  <div *ngFor="let station of favoriteStationsService.nearestStations">
-    <app-station [station]="station"></app-station>
-  </div>
-</div>

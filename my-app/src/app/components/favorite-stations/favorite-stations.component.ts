@@ -1,18 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { FaovoritStationsService } from '../faovorit-stations.service';
-import { ApiClientService } from '../api-client.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FavoriteStationsService } from '../../services/favorite-stations.service';
+import { ApiClientService } from '../../services/api-client.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-nearest-stations',
-  templateUrl: './nearest-stations.component.html',
-  styleUrls: ['./nearest-stations.component.css']
+  selector: 'app-favorite-stations',
+  templateUrl: './favorite-stations.component.html',
+  styleUrls: ['./favorite-stations.component.css']
   })
-export class NearestStationsComponent implements OnInit {
+export class FavoriteStationsComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   constructor (
-    public favoriteStationsService: FaovoritStationsService,
+    public favoriteStationsService: FavoriteStationsService,
     private apiClientService: ApiClientService
   ) {}
 
@@ -32,12 +32,14 @@ export class NearestStationsComponent implements OnInit {
             'slots'
           );
         });
-        this.favoriteStationsService.updateNearestStations(response.stations);
+        this.favoriteStationsService.updateFavoriteStations(response.stations);
       });
   }
 
   ngOnDestroy () {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   sanitizeStation (requestedStation, ...keys) {

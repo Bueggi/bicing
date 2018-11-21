@@ -1,0 +1,14 @@
+<div *ngIf="favoriteStationsService.nearestStations.length">
+  <div *ngFor="let station of favoriteStationsService.nearestStations">
+    <app-station [station]="station"></app-station>
+  </div>
+</div>
+
+<div *ngIf="favoriteStationsService.nearestStations.length === 0">
+  <mat-card>
+    <mat-icon>not_listed_location </mat-icon>
+    <mat-card-subtitle
+      >Select a station on the map to see nearby stations!</mat-card-subtitle
+    >
+  </mat-card>
+</div>

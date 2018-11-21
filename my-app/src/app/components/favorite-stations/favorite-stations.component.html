@@ -1,0 +1,12 @@
+<div *ngIf="favoriteStationsService.favoriteStations.length">
+  <div *ngFor="let station of favoriteStationsService.favoriteStations">
+    <app-station [station]="station"></app-station>
+  </div>
+</div>
+
+<div *ngIf="favoriteStationsService.favoriteStations.length === 0">
+  <mat-card>
+    <mat-icon>favorite_border</mat-icon>
+    <mat-card-subtitle>You haven't added any stations yet!</mat-card-subtitle>
+  </mat-card>
+</div>

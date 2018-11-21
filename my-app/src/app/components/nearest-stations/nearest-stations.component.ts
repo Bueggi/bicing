@@ -1,24 +1,22 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FaovoritStationsService } from '../faovorit-stations.service';
-import { ApiClientService } from '../api-client.service';
+import { FavoriteStationsService } from '../../services/favorite-stations.service';
+import { ApiClientService } from '../../services/api-client.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-favorite-stations',
-  templateUrl: './favorite-stations.component.html',
-  styleUrls: ['./favorite-stations.component.css']
+  selector: 'app-nearest-stations',
+  templateUrl: './nearest-stations.component.html',
+  styleUrls: ['./nearest-stations.component.css']
   })
-export class FavoriteStationsComponent implements OnInit, OnDestroy {
+export class NearestStationsComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   constructor (
-    public favoriteStationsService: FaovoritStationsService,
+    public favoriteStationsService: FavoriteStationsService,
     private apiClientService: ApiClientService
   ) {}
 
   ngOnInit () {
-    // using apiClientService to update info every 10 sec
-    // then sending to fav-StationsService to update and re-render
     this.subscription = this.apiClientService
       .checkStationsStatus()
       .subscribe(response => {
@@ -32,11 +30,12 @@ export class FavoriteStationsComponent implements OnInit, OnDestroy {
             'slots'
           );
         });
-        this.favoriteStationsService.updateFavoriteStations(response.stations);
+        this.favoriteStationsService.updateNearestStations(response.stations);
       });
   }
 
   ngOnDestroy () {
+    // console.log('subscription', this.subscription);
     this.subscription.unsubscribe();
   }
 

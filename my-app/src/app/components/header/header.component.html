@@ -1,0 +1,36 @@
+<div *ngIf="loadingStations">
+  <mat-card>
+    <mat-progress-spinner
+      id="logo-spinner"
+      [color]="progressSpinner.color"
+      [mode]="progressSpinner.mode"
+      [diameter]="progressSpinner.diameter"
+      [strokeWidth]="progressSpinner.strokeWidth"
+    >
+    </mat-progress-spinner>
+  </mat-card>
+</div>
+
+<div id="header" *ngIf="!loadingStations">
+  <mat-card>
+    <br />
+    <mat-icon>directions_bike</mat-icon>
+    <p><mat-card-title> Select Your Destination </mat-card-title></p>
+
+    <div id="header-form">
+      <mat-form-field>
+        <mat-select
+          (selectionChange)="selectMinSlots($event)"
+          [(value)]="selected"
+          placeholder="set minimum slots"
+        >
+          <mat-option value="1">1</mat-option>
+          <mat-option value="2">2</mat-option>
+          <mat-option value="3">3</mat-option>
+          <mat-option value="4">4</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-stroked-button color="warn" (click)="ride()">Route</button>
+    </div>
+  </mat-card>
+</div>

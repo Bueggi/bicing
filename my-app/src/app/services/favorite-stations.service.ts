@@ -1,19 +1,16 @@
 import { Injectable } from '@angular/core';
 
-import { Station } from './station';
+import { Station } from '../station';
 
 @Injectable({
   providedIn: 'root'
   })
-export class FaovoritStationsService {
+export class FavoriteStationsService {
   constructor () {}
 
   favoriteStations: Station[] = [];
 
   nearestStations: Station[] = [];
-
-  // initialStation -> should be another service
-  initialStation: Station;
 
   // add favorite
   add (station: Station) {
@@ -61,13 +58,5 @@ export class FaovoritStationsService {
         }
       });
     });
-  }
-
-  setInitialStation (station) {
-    this.initialStation = station;
-  }
-
-  getInitialStation () {
-    return this.initialStation;
   }
 }
