@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FavoriteStationsService } from '../../services/favorite-stations.service';
 import { ApiClientService } from '../../services/api-client.service';
 import { Subscription } from 'rxjs';
@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './nearest-stations.component.html',
   styleUrls: ['./nearest-stations.component.css']
   })
-export class NearestStationsComponent implements OnInit {
+export class NearestStationsComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   constructor (
@@ -17,8 +17,6 @@ export class NearestStationsComponent implements OnInit {
   ) {}
 
   ngOnInit () {
-    // using apiClientService to update info every 10 sec
-    // then sending to fav-StationsService to update and re-render
     this.subscription = this.apiClientService
       .checkStationsStatus()
       .subscribe(response => {
@@ -37,6 +35,7 @@ export class NearestStationsComponent implements OnInit {
   }
 
   ngOnDestroy () {
+    // console.log('subscription', this.subscription);
     this.subscription.unsubscribe();
   }
 

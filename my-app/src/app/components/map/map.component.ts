@@ -3,6 +3,7 @@ import {
   Input,
   EventEmitter,
   Output,
+  OnInit,
   OnChanges,
   ViewChild,
   AfterViewInit,
@@ -13,17 +14,18 @@ import { InitialStationService } from 'src/app/services/initial-station.service'
 import { GMapsServiceService } from 'src/app/services/g-maps-service.service';
 import { environment } from '../../../environments/environment.prod';
 import MarkerClusterer from '@google/markerclusterer';
+import { start } from 'repl';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
   })
-export class MapComponent implements AfterViewInit, OnChanges {
+export class MapComponent implements AfterViewInit, OnInit, OnChanges {
   currentLat = 41.3851;
   currentLong = 2.1734;
-  currentLocationMarker = '../../assets/blue_marker.png';
-  zoom = 14.5;
+  currentLocationMarker = '../../assets/bike-color.png';
+  zoom = 15;
   streetViewControl = false;
   openInfoWindow = false;
   opacity = 0.9;
@@ -32,6 +34,9 @@ export class MapComponent implements AfterViewInit, OnChanges {
   }`;
   map = null;
   marker = [];
+  currentMarker;
+  directionsService;
+  directionsDisplay;
 
   // using agm-directions https://robby570.tw/Agm-Direction-Docs/index.html
   // when origin & destination are ser the map display the route
@@ -59,20 +64,47 @@ export class MapComponent implements AfterViewInit, OnChanges {
   mapElm: ElementRef;
 
   constructor (
-    // <<<<<<< HEAD
     private load: GMapsServiceService,
     private initialStationService: InitialStationService
   ) {}
 
+  ngOnInit () {
+    // console.log('INIT!');
+  }
+
   ngOnChanges () {
     this.getUserLocation().then(() => this.getClosestStation());
-    this.addStationsToMap();
-    this.addMarkerClustererToMap();
+    this.calculateRoute();
   }
 
   ngAfterViewInit () {
+    this.setMapAndListeners();
+  }
+
+  clickedMarker (station) {
+    this.clickedStation.emit(station);
+  }
+
+  calculateRoute () {
+    if (this.destination) {
+      const { travelMode } = this;
+      const maps = window['google']['maps'];
+      const origin = new maps.LatLng(...Object.values(this.origin));
+      const destination = new maps.LatLng(...Object.values(this.destination));
+      const request = { origin, destination, travelMode };
+      this.directionsService.route(request, (result, status) => {
+        if (status == 'OK') {
+          this.directionsDisplay.setDirections(result);
+        }
+      });
+    }
+  }
+
+  setMapAndListeners () {
     this.load.loadScript(this.mapsAPiUrl, 'gmap', () => {
       const maps = window['google']['maps'];
+      this.directionsService = new maps.DirectionsService();
+      this.directionsDisplay = new maps.DirectionsRenderer(this.renderOptions);
       this.map = new maps.Map(this.mapElm.nativeElement, {
         zoom: this.zoom,
         center: {
@@ -86,15 +118,26 @@ export class MapComponent implements AfterViewInit, OnChanges {
         streetViewControl: false,
         scaleControl: true
       });
+      this.directionsDisplay.setMap(this.map);
       this.map.addListener('bounds_changed', () => {
-        console.log('bounds changed');
+        // console.log('bounds changed');
+        this.addCurrentMarkerToMap();
         this.addStationsToMap();
+        this.addMarkerClustererToMap();
       });
     });
   }
 
-  clickedMarker (station) {
-    this.clickedStation.emit(station);
+  addCurrentMarkerToMap () {
+    const maps = window['google']['maps'];
+    this.currentMarker = new maps.Marker({
+      position: {
+        lat: this.currentLat,
+        lng: this.currentLong
+      },
+      map: this.map,
+      icon: this.currentLocationMarker
+    });
   }
 
   addStationsToMap () {
@@ -112,7 +155,7 @@ export class MapComponent implements AfterViewInit, OnChanges {
               lng: station.longitude
             },
             map: this.map,
-            label: station.slots.toString()
+            label: station.id.toString()
           });
           newMarker.addListener('click', () => this.clickedMarker(station));
           this.marker.push(newMarker);

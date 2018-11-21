@@ -66,7 +66,7 @@ export class DashboardComponent implements OnInit {
 
   // on init get all station from Bicing api via my koa server
   addStations () {
-    console.log('got updated');
+    // console.log('got updated');
     this.loadingStations = true;
     this.apiClientService.getStations().subscribe(response => {
       this.stations = response.stations.map(station => {
@@ -83,7 +83,6 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // would be better to use observables to achieve this
   getInitialStation () {
     this.initialStationService.currentStation.subscribe(
       station => (this.initialStation = station)
@@ -139,6 +138,7 @@ export class DashboardComponent implements OnInit {
       };
 
       this.destination = newDestination;
+      console.log('destination obj', this.destination);
     }
   }
 
@@ -242,10 +242,3 @@ export class DashboardComponent implements OnInit {
     return requestedStation;
   }
 }
-
-// selectBikes () {
-//   this.element = 'bikes';
-// }
-// selectSlots () {
-//   this.element = 'slots';
-// }

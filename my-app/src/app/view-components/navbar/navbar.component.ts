@@ -4,12 +4,15 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
-})
+  })
 export class NavbarComponent implements OnInit {
+  constructor () {}
 
-  constructor() { }
+  ngOnInit () {}
 
-  ngOnInit() {
-  }
-
+  navLinks = [
+    { path: 'home', label: 'Map', icon: 'add_location' },
+    { path: 'nearest-stations', label: 'Nearby', icon: 'train' },
+    { path: 'favorite', label: 'Favorites', icon: 'favorite_border' }
+  ];
 }

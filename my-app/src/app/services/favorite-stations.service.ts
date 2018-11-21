@@ -12,9 +12,6 @@ export class FavoriteStationsService {
 
   nearestStations: Station[] = [];
 
-  // initialStation -> should be another service
-  // initialStation: Station;
-
   // add favorite
   add (station: Station) {
     const isAlreadyFav = this.favoriteStations.find(el => el.id === station.id);
@@ -62,12 +59,4 @@ export class FavoriteStationsService {
       });
     });
   }
-
-  // setInitialStation (station) {
-  //   this.initialStation = station;
-  // }
-
-  // getInitialStation () {
-  //   return this.initialStation;
-  // }
 }
