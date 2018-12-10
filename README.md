@@ -2,7 +2,7 @@ This project was originally started by @rusomarques - with his concideration I f
 
 
 <p align="center">
-  <img src="./assets/logo.png" width="50%">
+  <img src="https://github.com/rusomarques/parkBicing/raw/master/assets/logo.png" width="50%">
 </p> 
 
 ---
@@ -18,7 +18,7 @@ Parkbicing is a web app that help you keep track of free spaces in your [Bicing]
 5. Be aware of out of service station
 
   <p align="center">
-    <img src="./assets/bicis_bicing_new.jpg" width="80%">
+    <img src="https://github.com/rusomarques/parkBicing/raw/master/assets/bicis_bicing_new.jpg" width="80%">
   </p> 
 
 ## Table of contents
@@ -34,9 +34,9 @@ Parkbicing is a web app that help you keep track of free spaces in your [Bicing]
 ## Screenshots
 
 <div>
-  <img src="./assets/parkbicing_1.jpeg" alt="home" width="32%"> &nbsp;&nbsp;
-  <img src="./assets/parkbicing_2.jpeg" alt="route" width="32%"> &nbsp;&nbsp;
-  <img src="./assets/parkbicing_3.jpeg" alt="favorite stations" width="32%">
+  <img src="https://github.com/rusomarques/parkBicing/raw/master/assets/parkbicing_1.jpeg" alt="home" width="32%"> &nbsp;&nbsp;
+  <img src="https://github.com/rusomarques/parkBicing/raw/master/assets/parkbicing_2.jpeg" alt="route" width="32%"> &nbsp;&nbsp;
+  <img src="https://github.com/rusomarques/parkBicing/raw/master/assets/parkbicing_3.jpeg" alt="favorite stations" width="32%">
 </div>
 
 ## Getting started
